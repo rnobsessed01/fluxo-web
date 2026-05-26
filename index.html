@@ -1,0 +1,1877 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Fluxo - Ethereal AI</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#050505">
+<link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/aida/ADBb0uivO0pb_MEWLa2-ezUe6LbGmRhdaxpRmj0z7xxMH29ha82uVUFH7Wxdng8Qj6qYjXnLV0Eok-NKcmWWIca4JYi7LAq-SCBeiVpTVZ4Xw42XOB24AoNUnVKTO6ZmDhuixehOi9vlzqD0_MqKuOEj9HijPUC1YIz4MJiFp2n3ceH5ZHcU0DIsh4-xFIig1iDP1w9Z1dlVXTCWZBci3Ya8jeuCAPnSD41KHxaI6lFYCdK0ibzQAyuMG513hr5v">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+        html, body {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 15s linear infinite;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fade-in-left {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        :root {
+            --color-primary: #A855F7;
+            --color-secondary: #38BDF8;
+            --color-bg-deep: #06060E;
+            --color-glow: #2E1065;
+            --color-primary-rgb: 168, 85, 247;
+        }
+
+        [data-theme="obsidian"] {
+            --color-primary: #818cf8;
+            --color-secondary: #c084fc;
+            --color-bg-deep: #000000;
+            --color-glow: #1e1b4b;
+            --color-primary-rgb: 129, 140, 248;
+        }
+
+        [data-theme="cyber-cyan"] {
+            --color-primary: #06b6d4;
+            --color-secondary: #3b82f6;
+            --color-bg-deep: #001e2b;
+            --color-glow: #083344;
+            --color-primary-rgb: 6, 182, 212;
+        }
+
+        [data-theme="ethereal"] {
+            --color-primary: #A855F7;
+            --color-secondary: #38BDF8;
+            --color-bg-deep: #06060E;
+            --color-glow: #2E1065;
+            --color-primary-rgb: 168, 85, 247;
+        }
+
+        .theme-bg {
+            background: var(--color-bg-deep);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .theme-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 30%, var(--color-glow) 0%, transparent 50%);
+            animation: pulse-bg 15s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+            transition: background 0.5s ease;
+            will-change: transform, opacity, background;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .serif-text {
+            font-family: 'Instrument Serif', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        :root {
+            --color-primary: #A855F7;
+            --color-secondary: #38BDF8;
+            --color-bg-deep: #06060E;
+            --color-glow: #2E1065;
+            --color-primary-rgb: 168, 85, 247;
+        }
+
+        [data-theme="obsidian"] {
+            --color-primary: #818cf8;
+            --color-secondary: #c084fc;
+            --color-bg-deep: #000000;
+            --color-glow: #1e1b4b;
+            --color-primary-rgb: 129, 140, 248;
+        }
+
+        [data-theme="cyber-cyan"] {
+            --color-primary: #06b6d4;
+            --color-secondary: #3b82f6;
+            --color-bg-deep: #001e2b;
+            --color-glow: #083344;
+            --color-primary-rgb: 6, 182, 212;
+        }
+
+        [data-theme="ethereal"] {
+            --color-primary: #A855F7;
+            --color-secondary: #38BDF8;
+            --color-bg-deep: #06060E;
+            --color-glow: #2E1065;
+            --color-primary-rgb: 168, 85, 247;
+        }
+
+        .theme-bg {
+            background: var(--color-bg-deep);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .theme-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 30%, var(--color-glow) 0%, transparent 50%);
+            animation: pulse-bg 15s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+            transition: background 0.5s ease;
+            will-change: transform, opacity, background;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .serif-text {
+            font-family: 'Instrument Serif', serif;
+        }
+
+        .animate-fade-up {
+            animation: fade-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
+        }
+
+
+
+        .shimmer-text {
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,1) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 8s linear infinite;
+        }
+
+        .glass-card {
+            background: rgba(18, 17, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(0);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            background: rgba(18, 17, 39, 0.6);
+        }
+
+        #cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(var(--color-primary-rgb), 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            top: 0; left: 0;
+            will-change: transform;
+            transform: translate3d(-50%, -50%, 0);
+            transition: opacity 0.5s ease;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #A855F7;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px #A855F7;
+        }
+        .glass-shimmer {
+            position: absolute;
+            overflow: hidden;
+        }
+        .glass-shimmer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-15deg);
+            animation: shimmer 6s infinite;
+            pointer-events: none;
+        }
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "neon-blue": "var(--color-secondary)",
+                        "neon-purple": "var(--color-primary)",
+                        "obsidian-deep": "var(--color-bg-deep)",
+                        "indigo-glow": "var(--color-glow)",
+                        "on-surface": "#e3dffe",
+                        "on-surface-variant": "#ccc3d8",
+                        "glass-stroke": "rgba(255, 255, 255, 0.12)",
+                        "primary": "#d2bbff",
+                        "primary-container": "#7c3aed",
+                        "surface-container-lowest": "#0c0b21",
+                        "error": "#ffb4ab",
+                    },
+                    "fontFamily": {
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                        "display": ["Instrument Serif", "serif"],
+                        "sora": ["Sora", "sans-serif"],
+                        "geist": ["Geist", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body id="main-body" class="theme-bg text-on-surface font-body overflow-hidden h-screen flex transition-all duration-300">
+
+<!-- GLOBAL BROADCAST BANNER -->
+<div id="global-broadcast" class="hidden fixed top-0 left-0 w-full z-[999] bg-cyan-500/90 text-black font-bold py-3 shadow-[0_5px_30px_rgba(6,182,212,0.5)] transform -translate-y-full transition-transform duration-500 flex items-center overflow-hidden">
+    <div class="z-10 bg-cyan-500 pl-6 pr-4 flex items-center gap-3 relative shadow-[10px_0_15px_-3px_rgba(6,182,212,0.9)]">
+        <span class="material-symbols-outlined text-[20px]">campaign</span>
+    </div>
+    <div class="flex-1 overflow-hidden whitespace-nowrap">
+        <span id="broadcast-text" class="animate-marquee"></span>
+    </div>
+</div>
+<script>
+    const savedTheme = localStorage.getItem('fluxo_theme') || 'ethereal';
+    document.body.setAttribute('data-theme', savedTheme);
+</script>
+<div id="cursor-glow" style="left: 646px; top: 1009px;"></div>
+<!-- VOICE VISUALIZER -->
+<div id="voice-visualizer" class="fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] hidden items-center gap-1.5 glass-card px-6 py-3 rounded-full border border-neon-purple/50 shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all duration-300">
+    <span class="text-neon-purple text-xs font-bold uppercase tracking-widest mr-3">Fluxo Voice</span>
+    <div class="w-1.5 h-3 bg-neon-purple rounded-full animate-pulse" style="animation-delay: 0.0s"></div>
+    <div class="w-1.5 h-5 bg-neon-blue rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
+    <div class="w-1.5 h-8 bg-neon-purple rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+    <div class="w-1.5 h-4 bg-neon-blue rounded-full animate-pulse" style="animation-delay: 0.3s"></div>
+    <div class="w-1.5 h-6 bg-neon-purple rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
+</div>
+<div id="offline-banner" class="fixed top-6 left-1/2 bg-obsidian-deep/90 backdrop-blur-3xl border border-error/30 text-white py-3 px-6 rounded-full text-sm font-medium z-[100] transform -translate-x-1/2 -translate-y-[250%] transition-transform duration-500 shadow-2xl shadow-error/10 flex items-center justify-center gap-3">
+    <span class="material-symbols-outlined text-error text-[20px] animate-pulse">wifi_off</span>
+    No internet connection. Fluxo requires an active network.
+</div>
+<div class="fixed inset-0 pointer-events-none z-0 opacity-5 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat mix-blend-overlay"></div>
+<!-- Persistent Sidebar -->
+<div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-[150] hidden md:hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+<nav id="main-sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 md:relative w-20 bg-obsidian-deep/95 md:bg-white/[0.01] backdrop-blur-3xl border-r border-white/5 flex flex-col items-center py-10 z-[200] transition-transform duration-300">
+<div class="mb-12">
+<button class="block" onclick="showSection('dashboard')">
+<span class="material-symbols-outlined text-[32px] text-white/90 drop-shadow-[0_0_15px_rgba(168,85,247,0.8)] mb-1">blur_on</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col gap-8 nav-links">
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="showSection('dashboard')" title="New Chat">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="showSection('history')" title="History">
+<span class="material-symbols-outlined text-[28px]">history</span>
+</button>
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="showSection('notebooks')" title="Notebooks">
+<span class="material-symbols-outlined text-[28px]">auto_stories</span>
+</button>
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="showSection('library')" title="Library">
+<span class="material-symbols-outlined text-[28px]">local_library</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col gap-8">
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110 mb-8" onclick="showSection('settings')" title="Settings">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+</button><button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110 mb-8" onclick="showSection('info')" title="Info">
+<span class="material-symbols-outlined text-[28px]">info</span>
+</button>
+<button class="text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="showSection('help')" title="Help">
+<span class="material-symbols-outlined text-[28px]">help</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative overflow-hidden z-10">
+<!-- Persistent Header -->
+<header class="pt-12 md:pt-4 h-24 flex justify-between md:justify-end items-center px-6 md:px-12 z-40 shrink-0">
+<button class="md:hidden text-on-surface-variant hover:text-white transition-all transform hover:scale-110" onclick="toggleSidebar()">
+<span class="material-symbols-outlined text-[28px]">menu</span>
+</button>
+<div class="flex items-center gap-4 md:gap-8">
+<button id="voice-toggle-btn" class="relative group mr-2 md:mr-4" onclick="toggleVoiceOutput()" title="Toggle Voice Response">
+<span id="voice-toggle-icon" class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-neon-purple transition-all transform">volume_off</span>
+</button>
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white transition-all hover:rotate-12 transform">notifications</span>
+<div class="absolute right-0 top-full mt-4 w-72 p-5 glass-card rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-neon-purple/20 flex items-center justify-center shrink-0 border border-neon-purple/30">
+<span class="material-symbols-outlined text-neon-purple text-[20px]">info</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">System Update</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Any Updates Related To Version , will directly notified</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white transition-all text-[32px] transform hover:scale-110">account_circle</span>
+<div class="absolute right-0 top-full mt-4 w-80 p-6 glass-card rounded-3xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+<div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple shadow-[0_0_15px_rgba(168,85,247,0.3)] shrink-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ">
+</div>
+<div>
+<h4 class="font-bold text-white text-lg">Alex Vance</h4>
+<p class="text-xs text-on-surface-variant">alex.vance@fluxo.ai</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl bg-neon-purple/5 border border-neon-purple/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-neon-purple text-[24px]">verified</span>
+<div>
+<p class="font-bold text-white text-sm">Fluxo Pro Plan</p>
+<p class="text-[10px] text-on-surface-variant">Active until Oct 12, 2025</p>
+</div>
+</div>
+<button class="text-xs font-semibold text-neon-purple hover:underline">Manage</button>
+</div>
+<div class="space-y-2">
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors text-left text-sm text-on-surface-variant hover:text-white" onclick="switchSection('settings')">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+Account Settings
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors text-left text-sm text-red-400 hover:text-red-300" onclick="logout()">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+Sign Out
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto px-4 md:px-12 pb-32" id="content-container">
+<!-- SECTION: ACTIVE CHAT -->
+<section class="content-section animate-fade-up max-w-4xl mx-auto" id="active-chat">
+<div class="flex flex-col gap-8 pb-10 mt-6 md:mt-12" id="chat-messages">
+<!-- Messages will be injected here -->
+<div class="text-center opacity-40 italic mt-20" id="chat-placeholder">Start a conversation to see messages here...</div>
+</div>
+</section>
+
+<!-- SECTION: DASHBOARD -->
+<section class="content-section animate-fade-up active" id="dashboard">
+<div class="text-center mb-10 md:mb-20 max-w-4xl mx-auto relative">
+<div class="absolute inset-0 bg-neon-purple/5 blur-[120px] rounded-full pointer-events-none"></div>
+<h2 class="serif-text text-5xl md:text-8xl text-white italic tracking-tight leading-[1.1] relative z-10">
+<span class="shimmer-text">Hello, I'm Fluxo.</span><br>
+<span class="not-italic font-light opacity-60 text-3xl md:text-6xl tracking-normal mt-2 block">How can I help you today?</span>
+</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mx-auto">
+<!-- Dashboard Cards -->
+<button class="glass-card rounded-3xl p-8 text-left group flex flex-col gap-6 transform hover:-translate-y-2 transition-all cursor-pointer" onclick="startChatWithPrompt('Write a blog post')">
+<div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center transition-all group-hover:bg-white/10 group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 group-hover:text-white">edit_note</span>
+</div>
+<div>
+<h3 class="text-lg font-medium text-white mb-2">Write a blog post</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Generate structured, engaging content.</p>
+</div>
+</button>
+<button class="glass-card rounded-3xl p-8 text-left group flex flex-col gap-6 transform hover:-translate-y-2 transition-all cursor-pointer" onclick="startChatWithPrompt('Analyze a spreadsheet')">
+<div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center transition-all group-hover:bg-white/10 group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 group-hover:text-white">table_chart</span>
+</div>
+<div>
+<h3 class="text-lg font-medium text-white mb-2">Analyze a spreadsheet</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Extract insights and format data.</p>
+</div>
+</button>
+<button class="glass-card rounded-3xl p-8 text-left group flex flex-col gap-6 transform hover:-translate-y-2 transition-all cursor-pointer" onclick="startChatWithPrompt('Design a logo concept')">
+<div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center transition-all group-hover:bg-white/10 group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 group-hover:text-white">brush</span>
+</div>
+<div>
+<h3 class="text-lg font-medium text-white mb-2">Design a logo concept</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Brainstorm visual identities.</p>
+</div>
+</button>
+<button class="glass-card rounded-3xl p-8 text-left group flex flex-col gap-6 transform hover:-translate-y-2 transition-all cursor-pointer" onclick="startChatWithPrompt('Explain quantum physics')">
+<div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center transition-all group-hover:bg-white/10 group-hover:rotate-6">
+<span class="material-symbols-outlined text-white/40 group-hover:text-white">science</span>
+</div>
+<div>
+<h3 class="text-lg font-medium text-white mb-2">Explain quantum physics</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Break down complex concepts.</p>
+</div>
+</button>
+</div></section>
+<!-- SECTION: HISTORY -->
+<section class="content-section animate-fade-up max-w-4xl mx-auto" id="history">
+<header class="mb-12 text-center">
+<h2 class="sora text-5xl font-bold text-white mb-4">Chat History</h2>
+<p class="text-on-surface-variant text-lg">Access your previous dialogues and intellectual explorations.</p>
+</header>
+<div class="space-y-6">
+<div class="glass-card rounded-[2.5rem] p-8 md:p-16 flex flex-col items-center justify-center text-center gap-4 animate-fade-up border border-white/5 bg-white/[0.02]">
+    <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10 mb-2">
+        <span class="material-symbols-outlined text-4xl opacity-40">history_toggle_off</span>
+    </div>
+    <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-white">No history found</h3>
+        <p class="text-on-surface-variant max-w-sm mx-auto">Your previous conversations and explorations will automatically appear here once you start a new chat.</p>
+    </div>
+</div>
+</div>
+</section>
+<!-- SECTION: NOTEBOOKS -->
+<section class="content-section animate-fade-up max-w-6xl mx-auto" id="notebooks">
+<header class="mb-12">
+<h2 class="sora text-5xl font-bold text-white mb-4">Notebooks<span class="text-neon-purple">.</span></h2>
+<p class="text-on-surface-variant text-lg max-w-2xl">High-fidelity knowledge nodes organized for your complex thoughts and research.</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="glass-card rounded-3xl p-6 group cursor-pointer hover:-translate-y-1" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+<div class="aspect-video rounded-xl overflow-hidden mb-6 bg-obsidian-deep border border-white/5">
+<img class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak">
+</div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-neon-purple transition-colors">Quantum Ledger Protocol</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4">In-depth analysis of zero-knowledge proofs and their integration into scalable layer 2 environments.</p>
+<div class="flex justify-between text-xs opacity-40"><span class="">2,450 words</span><span class="">2h ago</span></div>
+</div>
+<div class="glass-card rounded-3xl p-6 group cursor-pointer hover:-translate-y-1" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+<div class="aspect-video rounded-xl overflow-hidden mb-6 bg-obsidian-deep border border-white/5">
+<img class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx">
+</div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-neon-blue transition-colors">Neural Architecture v4</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4">Technical specifications for the upcoming transformer-based core update.</p>
+<div class="flex justify-between text-xs opacity-40"><span class="">5,120 words</span><span class="">Yesterday</span></div>
+</div>
+<div class="border-2 border-dashed border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-4xl opacity-40">add_circle</span>
+<p class="font-bold opacity-60">Create New Notebook</p>
+</div>
+</div>
+</section>
+<!-- SECTION: LIBRARY -->
+<section class="content-section animate-fade-up max-w-6xl mx-auto" id="library">
+<header class="mb-12">
+<h2 class="sora text-5xl font-bold text-white mb-4">Neural Library</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl">Access centralized research, code implementations, and pre-trained neural architectures.</p>
+</header>
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-12 lg:col-span-8 glass-card rounded-3xl p-8" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+<div class="flex justify-between mb-8">
+<div class="w-14 h-14 rounded-2xl bg-neon-purple/20 flex items-center justify-center border border-neon-purple/30 text-neon-purple">
+<span class="material-symbols-outlined text-3xl">menu_book</span>
+</div>
+</div>
+<h3 class="text-2xl font-bold mb-4">Research Papers</h3>
+<p class="text-on-surface-variant mb-8">Peer-reviewed literature spanning LLM optimization and reasoning architectures.</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 rounded-xl bg-white/5 border border-white/5">
+<p class="text-[10px] uppercase font-bold text-neon-purple mb-1">Latest</p>
+<p class="text-sm font-medium">Attention is All You Need: Optimized</p>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-white/5">
+<p class="text-[10px] uppercase font-bold text-neon-purple mb-1">Popular</p>
+<p class="text-sm font-medium">Latent Diffusion Fundamentals</p>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4 glass-card rounded-3xl p-8 flex flex-col" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+<div class="w-14 h-14 rounded-2xl bg-neon-blue/20 flex items-center justify-center border border-neon-blue/30 text-neon-blue mb-8">
+<span class="material-symbols-outlined text-3xl">code</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Code Snippets</h3>
+<p class="text-on-surface-variant mb-auto">Ready-to-deploy Python and TypeScript boilerplate for Fluxo integration.</p>
+<button class="mt-8 flex items-center gap-2 text-neon-blue font-semibold hover:underline">Browse Repository <span class="material-symbols-outlined">arrow_forward</span></button>
+</div>
+</div>
+</section>
+<!-- SECTION: SETTINGS -->
+<section class="content-section animate-fade-up max-w-4xl mx-auto" id="settings"><header class="mb-12 text-center">
+<h2 class="sora text-5xl font-bold text-white mb-4">Configuration</h2>
+<p class="text-on-surface-variant text-lg">Personalize your Fluxo experience and neural parameters.</p>
+</header>
+<div class="space-y-12">
+
+<!-- Interface Section -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-neon-blue">palette</span>
+<h3 class="text-2xl font-semibold text-white">Interface</h3>
+</div>
+<div class="glass-card rounded-[2rem] p-6 md:p-10 space-y-10">
+<div>
+<label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-6 block">Color Theme</label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="theme-selector">
+<button class="theme-btn p-4 rounded-2xl border-2 border-neon-purple bg-white/5 text-left" data-theme="obsidian" onclick="setTheme('obsidian')">
+<div class="w-full h-12 bg-gradient-to-br from-indigo-glow to-black rounded-lg mb-3"></div>
+<p class="text-sm font-semibold text-white">Obsidian</p>
+<p class="text-[10px] text-neon-purple uppercase theme-status">Active</p>
+</button>
+<button class="theme-btn p-4 rounded-2xl border border-white/5 bg-white/[0.02] text-left opacity-40 hover:opacity-100 transition-opacity" data-theme="cyber-cyan" onclick="setTheme('cyber-cyan')">
+<div class="w-full h-12 bg-gradient-to-br from-[#00344d] to-black rounded-lg mb-3"></div>
+<p class="text-sm font-semibold text-white">Cyber-Cyan</p>
+<p class="text-[10px] text-on-surface-variant uppercase theme-status">Available</p>
+</button>
+<button class="theme-btn p-4 rounded-2xl border border-white/5 bg-white/[0.02] text-left opacity-40 hover:opacity-100 transition-opacity" data-theme="ethereal" onclick="setTheme('ethereal')">
+<div class="w-full h-12 bg-gradient-to-br from-[#85145a] to-[#25005a] rounded-lg mb-3"></div>
+<p class="text-sm font-semibold text-white">Ethereal</p>
+<p class="text-[10px] text-on-surface-variant uppercase theme-status">Available</p>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Font Scaling</label>
+<span id="font-scale-display" class="text-neon-blue text-sm">110%</span>
+</div>
+<input id="font-scale-slider" class="w-full" max="150" min="80" type="range" value="110" oninput="updateFontScale(this.value)">
+</div>
+<div class="flex items-center justify-between p-5 bg-white/5 rounded-2xl border border-white/10">
+<div class="space-y-0.5">
+<p class="text-sm font-semibold text-white">Motion Effects</p>
+<p class="text-xs text-on-surface-variant">Smooth UI transitions</p>
+</div>
+<button id="motion-effects-toggle" class="w-11 h-6 rounded-full bg-neon-purple relative transition-colors duration-300" onclick="toggleMotionEffects()">
+<div id="motion-effects-knob" class="absolute top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 transform translate-x-6"></div>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Configuration Section -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-neon-purple">smart_toy</span>
+<h3 class="text-2xl font-semibold text-white">AI Configuration</h3>
+</div>
+<div class="glass-card rounded-[2rem] p-10 space-y-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div class="space-y-4">
+<label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Primary Engine</label>
+<select id="primary-engine-select" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-neon-blue outline-none appearance-none cursor-pointer" onchange="changeEngine(this.value)">
+<option>Fluxo Core v2.4 (Latest)</option>
+<option>Fluxo Lightweight v1.9</option>
+<option>Experimental Flux-X</option>
+</select>
+</div>
+<div class="space-y-4">
+<label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Memory Context</label>
+<div class="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
+<button id="mem-long-term" class="flex-1 py-2 rounded-lg bg-neon-purple text-white text-[10px] uppercase font-bold tracking-widest transition-all" onclick="setMemoryContext('long-term')">Long Term</button>
+<button id="mem-session-only" class="flex-1 py-2 rounded-lg text-on-surface-variant text-[10px] uppercase font-bold tracking-widest hover:text-white transition-all" onclick="setMemoryContext('session-only')">Session Only</button>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Response Creativity</label>
+<span class="text-[10px] px-2 py-0.5 rounded bg-neon-blue/10 text-neon-blue border border-neon-blue/20">Creative (0.8)</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="80">
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase tracking-widest">
+<span class="">Precise</span>
+<span class="">Balanced</span>
+<span class="">Imaginative</span>
+</div>
+</div>
+<!-- API Key Section -->
+<div class="mt-8 pt-8 border-t border-white/10 space-y-4">
+    <div class="flex justify-between items-center">
+        <label class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Groq API Key (Free)</label>
+        <a href="https://console.groq.com/keys" target="_blank" class="text-[10px] text-neon-blue hover:underline uppercase tracking-widest">Get Free Key</a>
+    </div>
+    <div class="flex gap-4">
+        <input id="api-key" class="flex-1 bg-obsidian-deep border border-white/10 rounded-xl px-4 py-3 text-white focus:border-neon-purple outline-none transition-all font-mono text-sm placeholder:text-white/20" type="password" placeholder="gsk_...">
+        <button onclick="saveApiKey()" class="px-6 py-3 bg-neon-purple text-white rounded-xl font-semibold hover:bg-neon-purple/80 transition-colors">Save</button>
+    </div>
+    <p id="api-key-status" class="text-xs text-emerald-400 hidden">API Key saved securely to your browser.</p>
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<div class="flex justify-end gap-4">
+<button onclick="discardChanges()" class="px-8 py-3 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 hover:border-red-400/30 hover:text-red-400 transition-all">Discard Changes</button>
+<button onclick="savePreferences()" class="px-10 py-3 rounded-xl bg-gradient-to-r from-neon-purple to-neon-blue text-white font-bold shadow-xl shadow-neon-purple/20 hover:scale-105 active:scale-95 transition-all">Save Preferences</button>
+</div>
+</div></section><section class="content-section animate-fade-up max-w-4xl mx-auto" id="info">
+<header class="mb-12 text-center">
+<h2 class="sora text-5xl font-bold text-white mb-4">System Information</h2>
+<p class="text-on-surface-variant text-lg">Deep technical metadata and project provenance.</p>
+</header>
+<div class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="glass-card rounded-3xl p-8 flex flex-col gap-4">
+<div class="flex items-center gap-3 text-neon-purple">
+<span class="material-symbols-outlined">terminal</span>
+<h3 class="text-xl font-semibold text-white">Software Details</h3>
+</div>
+<div class="space-y-4 mt-2">
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Version</span>
+<span class="text-white font-mono">v2.4.1-stable</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Build ID</span>
+<span class="text-white font-mono">FX-8892-TH</span>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-3xl p-8 flex flex-col gap-4">
+<div class="flex items-center gap-3 text-neon-blue">
+<span class="material-symbols-outlined">neurology</span>
+<h3 class="text-xl font-semibold text-white">Intelligence</h3>
+</div>
+<div class="space-y-4 mt-2">
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Agent</span>
+<span class="text-white">Fluxo Core v2.4</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-2">
+<span class="text-on-surface-variant">Architecture</span>
+<span class="text-white">Neural Architecture</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="glass-card rounded-[2.5rem] p-12 bg-gradient-to-br from-neon-purple/5 to-transparent border-neon-purple/20 flex flex-col items-center text-center gap-6 animate-fade-up" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+    <h3 class="sora text-3xl font-bold text-white">Rate Your Experience</h3>
+    <div class="flex gap-4 group/stars" id="star-rating">
+        <button class="star-btn text-on-surface-variant hover:text-neon-purple hover:drop-shadow-[0_0_8px_#A855F7] transition-all transform hover:scale-125" onclick="rateExperience(1)">
+            <span class="material-symbols-outlined text-4xl">star</span>
+        </button>
+        <button class="star-btn text-on-surface-variant hover:text-neon-purple hover:drop-shadow-[0_0_8px_#A855F7] transition-all transform hover:scale-125" onclick="rateExperience(2)">
+            <span class="material-symbols-outlined text-4xl">star</span>
+        </button>
+        <button class="star-btn text-on-surface-variant hover:text-neon-purple hover:drop-shadow-[0_0_8px_#A855F7] transition-all transform hover:scale-125" onclick="rateExperience(3)">
+            <span class="material-symbols-outlined text-4xl">star</span>
+        </button>
+        <button class="star-btn text-on-surface-variant hover:text-neon-purple hover:drop-shadow-[0_0_8px_#A855F7] transition-all transform hover:scale-125" onclick="rateExperience(4)">
+            <span class="material-symbols-outlined text-4xl">star</span>
+        </button>
+        <button class="star-btn text-on-surface-variant hover:text-neon-purple hover:drop-shadow-[0_0_8px_#A855F7] transition-all transform hover:scale-125" onclick="rateExperience(5)">
+            <span class="material-symbols-outlined text-4xl">star</span>
+        </button>
+    </div>
+    <div id="feedback-form" class="w-full max-w-md hidden flex-col gap-4 animate-fade-up mt-4">
+        <textarea id="feedback-text" class="w-full bg-obsidian-deep border border-white/10 rounded-xl p-4 text-white focus:border-neon-purple outline-none transition-all placeholder:text-white/20 resize-none h-24" placeholder="Tell ARYAN what you think..."></textarea>
+        <button onclick="submitFeedback()" class="w-full py-4 rounded-xl bg-gradient-to-r from-neon-purple to-neon-blue text-white font-bold shadow-xl shadow-neon-purple/20 hover:scale-[1.02] active:scale-95 transition-all">Send to Creator</button>
+    </div>
+    <p id="rating-prompt" class="text-on-surface-variant text-sm font-medium tracking-wide uppercase mt-2">Provide Feedback</p>
+</div>
+
+
+
+</div>
+</section>
+
+<!-- SECTION: ADMIN PANEL -->
+<section class="content-section animate-fade-up max-w-4xl mx-auto" id="admin">
+<header class="mb-12 text-center">
+<div class="w-20 h-20 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+<span class="material-symbols-outlined text-4xl text-red-500">admin_panel_settings</span>
+</div>
+<h2 class="sora text-5xl font-bold text-white mb-4">Admin Command Center</h2>
+<p class="text-on-surface-variant text-lg">Secure control panel for system broadcasts and analytics.</p>
+</header>
+<div id="admin-login" class="glass-card rounded-[2rem] p-8 max-w-md mx-auto text-center border border-red-500/30">
+<h3 class="text-xl font-bold text-white mb-4">Master Authentication Required</h3>
+<input type="password" id="admin-key-input" class="w-full bg-obsidian-deep border border-white/10 rounded-xl px-4 py-3 text-white mb-4 text-center tracking-widest" placeholder="ENTER MASTER KEY">
+<button onclick="adminLogin()" class="w-full py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition-colors">AUTHORIZE</button>
+<p id="admin-error" class="text-error text-sm mt-4 hidden">Access Denied. Invalid Master Key.</p>
+</div>
+<div id="admin-dashboard" class="hidden space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="glass-card rounded-2xl p-6 text-center">
+<h4 class="text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-2">Total Users</h4>
+<p id="admin-stat-users" class="text-3xl font-bold text-neon-blue animate-pulse">...</p>
+</div>
+<div class="glass-card rounded-2xl p-6 text-center">
+<h4 class="text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-2">Messages</h4>
+<p id="admin-stat-msgs" class="text-3xl font-bold text-neon-purple animate-pulse">...</p>
+</div>
+<div class="glass-card rounded-2xl p-6 text-center">
+<h4 class="text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-2">RAM Usage</h4>
+<p id="admin-stat-ram" class="text-3xl font-bold text-red-400 animate-pulse">...</p>
+</div>
+</div>
+<div class="glass-card rounded-3xl p-8 border border-red-500/20">
+<h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-red-500">campaign</span> Global Broadcast System</h3>
+<textarea id="admin-broadcast-msg" class="w-full bg-obsidian-deep border border-white/10 rounded-xl p-4 text-white resize-none h-24 mb-4 placeholder:text-white/20" placeholder="Enter message to broadcast globally to all users..."></textarea>
+<div class="flex gap-4">
+<button onclick="pushBroadcast(false)" class="flex-1 py-3 rounded-xl border border-red-500/50 text-red-500 font-bold hover:bg-red-500/10 transition-colors">Clear Broadcast</button>
+<button onclick="pushBroadcast(true)" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:scale-[1.02] active:scale-95 transition-all">PUSH BROADCAST</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SECTION: HELP -->
+<section class="content-section animate-fade-up max-w-4xl mx-auto" id="help">
+<header class="mb-12 text-center">
+<div class="w-20 h-20 rounded-full bg-neon-purple/10 border-2 border-neon-purple/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+<span class="material-symbols-outlined text-4xl text-neon-purple">help_outline</span>
+</div>
+<h2 class="sora text-5xl font-bold text-white mb-4">Help & Support</h2>
+<p class="text-on-surface-variant text-lg">Simple, user-friendly answers to get you started.</p>
+</header>
+<div class="space-y-6">
+<button class="w-full text-left glass-card rounded-[2rem] p-8 border border-white/10 hover:border-neon-purple/30 transition-all hover:-translate-y-1 cursor-pointer group" onclick="showSection('dashboard'); setTimeout(() => document.getElementById('chat-input').focus(), 100);">
+<h3 class="text-xl font-bold text-white mb-3 flex items-center gap-3"><span class="material-symbols-outlined text-neon-purple group-hover:scale-110 transition-transform">chat</span> How do I start a chat?</h3>
+<p class="text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">Simply type your question or prompt in the text box at the very bottom of the screen and press Enter. <span class="text-neon-purple font-semibold">Click here to start!</span></p>
+</button>
+<button class="w-full text-left glass-card rounded-[2rem] p-8 border border-white/10 hover:border-neon-purple/30 transition-all hover:-translate-y-1 cursor-pointer group" onclick="showSection('settings');">
+<h3 class="text-xl font-bold text-white mb-3 flex items-center gap-3"><span class="material-symbols-outlined text-neon-purple group-hover:scale-110 transition-transform">palette</span> How can I change the theme?</h3>
+<p class="text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">You can swap between Obsidian, Ethereal, or Eclipse themes. <span class="text-neon-purple font-semibold">Click here to open Settings and change your theme.</span></p>
+</button>
+<button class="w-full text-left glass-card rounded-[2rem] p-8 border border-white/10 hover:border-neon-blue/30 transition-all hover:-translate-y-1 cursor-pointer group" onclick="navigator.clipboard.writeText('tteamfluxo@gmail.com'); showToast('Email copied to clipboard!');">
+<h3 class="text-xl font-bold text-white mb-3 flex items-center gap-3"><span class="material-symbols-outlined text-neon-blue group-hover:scale-110 transition-transform">mail</span> Still need assistance?</h3>
+<p class="text-on-surface-variant leading-relaxed group-hover:text-white transition-colors">You can directly reach out to our team anytime. Click to copy our support email: <span class="text-neon-blue font-semibold inline-flex items-center gap-1.5 bg-neon-blue/10 px-2 py-0.5 rounded-lg align-middle group-hover:bg-neon-blue/20 transition-colors transform -translate-y-[1px]">tteamfluxo@gmail.com <span class="material-symbols-outlined text-[15px]">content_copy</span></span></p>
+</button>
+</div>
+</section>
+</div>
+<!-- Chat Input (Sticky) -->
+<div id="chat-input-wrapper" class="fixed bottom-4 md:bottom-12 left-0 md:left-20 right-0 flex justify-center px-4 md:px-12 z-50">
+<div class="w-full max-w-3xl flex flex-col gap-2 relative">
+<div id="attachment-preview-container" class="hidden self-start bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-2xl p-2 items-center gap-3 animate-fade-up shadow-xl mb-1">
+<img id="attachment-preview-img" src="" class="h-14 w-14 object-cover rounded-xl border border-white/10">
+<div class="flex-1 pr-4">
+<p class="text-white font-medium text-sm">Image Attached</p>
+<p class="text-on-surface-variant text-xs">Ready to send</p>
+</div>
+<button onclick="removeAttachment()" class="p-2 text-white/40 hover:text-error transition-colors hover:bg-white/5 rounded-full" title="Remove attachment">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="w-full bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2rem] flex items-center p-1.5 md:p-2 pl-4 md:pl-6 transition-all focus-within:border-white/20 focus-within:bg-white/[0.05] shadow-2xl">
+<input id="chat-input" class="flex-1 min-w-0 bg-transparent border-none focus:ring-0 text-base md:text-lg text-white placeholder-white/20 py-3 md:py-4" placeholder="Ask Fluxo anything..." type="text">
+<div class="flex items-center gap-1 md:gap-2 pr-1 md:pr-2 shrink-0">
+<input type="file" id="file-upload" accept="image/*,.pdf,.csv,.txt,.md" class="hidden" onchange="handleFileUpload(event)">
+<button class="p-2 md:p-3 text-white/40 hover:text-white transition-colors hover:scale-110 transform" onclick="document.getElementById('file-upload').click()"><span class="material-symbols-outlined text-[20px] md:text-[24px]">attach_file</span></button>
+<button id="mic-btn" class="p-2 md:p-3 text-white/40 hover:text-white transition-colors hover:scale-110 transform" onclick="toggleVoiceInput()"><span id="mic-icon" class="material-symbols-outlined text-[20px] md:text-[24px]">mic</span></button>
+<button id="send-btn" class="bg-white/5 hover:bg-white/10 p-3 md:p-4 rounded-2xl text-white transition-all transform active:scale-95 hover:scale-105" onclick="handleSendMessage()"><span class="material-symbols-outlined text-[20px] md:text-[24px]">send</span></button>
+<button id="stop-btn" class="hidden bg-error/10 hover:bg-error/20 p-3 md:p-4 rounded-2xl text-error transition-all transform active:scale-95 hover:scale-105" onclick="stopGenerating()"><span class="material-symbols-outlined text-[20px] md:text-[24px]">stop_circle</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        const glow = document.getElementById('cursor-glow');
+        
+        // Optimize: Disable layout-thrashing cursor glow on touch devices
+        if (!window.matchMedia("(pointer: coarse)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    glow.style.transform = `translate3d(${e.clientX - 300}px, ${e.clientY - 300}px, 0)`;
+                });
+            }, { passive: true });
+        } else {
+            glow.style.display = 'none';
+        }
+
+        // Mobile Sidebar Toggle
+        // Auto-check authentication on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('fluxo_jwt');
+            if(!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            try {
+                const res = await fetch('/api/auth/status', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) {
+                    throw new Error('Invalid or banned');
+                }
+            } catch (err) {
+                localStorage.removeItem('fluxo_jwt');
+                window.location.href = 'login.html';
+            }
+        });
+
+        
+
+        function logout() {
+            localStorage.removeItem('fluxo_jwt');
+            window.location.href = 'login.html';
+        }
+
+        async function loadChatHistory() {
+            try {
+                const token = localStorage.getItem('fluxo_jwt');
+                if(!token) return;
+                
+                const res = await fetch('/api/history', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                if(res.ok && data.history) {
+                    const chatMessages = document.getElementById('chat-messages');
+                    // We could parse history here, but for now we just show a toast
+                    console.log("Loaded history:", data.history.length, "messages");
+                }
+            } catch (err) {
+                console.error("Failed to load history", err);
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('main-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+
+            if (sectionId === 'dashboard') {
+                resetChatSession();
+            }
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-links button').forEach(btn => {
+                btn.classList.remove('text-white');
+                btn.classList.add('text-on-surface-variant');
+            });
+
+            const chatWrapper = document.getElementById('chat-input-wrapper');
+            if (chatWrapper) {
+                if (sectionId === 'dashboard' || sectionId === 'active-chat') {
+                    chatWrapper.style.display = 'flex';
+                } else {
+                    chatWrapper.style.display = 'none';
+                }
+            }
+
+            document.getElementById('content-container').scrollTop = 0;
+        }
+
+        // Chat Logic
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatPlaceholder = document.getElementById('chat-placeholder');
+
+        function startChatWithPrompt(promptText) {
+            chatInput.value = promptText;
+            handleSendMessage();
+        }
+
+        // --- AI Action Bar & Generating State ---
+        function getAiActionBarHTML() {
+            return `
+            <div class="flex items-center gap-1 mt-4 pt-4 border-t border-white/5 text-white/40">
+                <button class="p-1.5 hover:text-white transition-colors rounded hover:bg-white/5" title="Copy" onclick="showToast('Copied to clipboard')"><span class="material-symbols-outlined text-[16px]">content_copy</span></button>
+                <button class="p-1.5 hover:text-white transition-colors rounded hover:bg-white/5" title="Regenerate"><span class="material-symbols-outlined text-[16px]">refresh</span></button>
+                <button class="p-1.5 hover:text-white transition-colors rounded hover:bg-white/5" title="Good response"><span class="material-symbols-outlined text-[16px]">thumb_up</span></button>
+                <button class="p-1.5 hover:text-white transition-colors rounded hover:bg-white/5" title="Bad response"><span class="material-symbols-outlined text-[16px]">thumb_down</span></button>
+            </div>
+            `;
+        }
+
+        window.isGeneratingResponse = false;
+        function toggleGeneratingState(isGenerating) {
+            window.isGeneratingResponse = isGenerating;
+            const sendBtn = document.getElementById('send-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            if (isGenerating) {
+                if(sendBtn) sendBtn.classList.add('hidden');
+                if(stopBtn) stopBtn.classList.remove('hidden');
+            } else {
+                if(sendBtn) sendBtn.classList.remove('hidden');
+                if(stopBtn) stopBtn.classList.add('hidden');
+            }
+        }
+
+        function stopGenerating() {
+            if(!window.isGeneratingResponse) return;
+            window.isGeneratingResponse = false;
+            showToast('Generation stopped by user.');
+            toggleGeneratingState(false);
+            
+            // Cleanup typing indicators
+            document.querySelectorAll('#chat-messages > div').forEach(el => {
+                if(el.innerHTML.includes('animate-bounce') || el.innerHTML.includes('Transmitting to Neural Net')) {
+                    el.remove();
+                }
+            });
+        }
+        // ----------------------------------------
+
+        // Admin Logic
+        let masterKey = '';
+        async function adminLogin() {
+            const key = document.getElementById('admin-key-input').value.trim();
+            masterKey = key;
+            try {
+                const res = await fetch('/api/admin/analytics', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({adminKey: key})
+                });
+                if(res.ok) {
+                    const data = await res.json();
+                    document.getElementById('admin-login').classList.add('hidden');
+                    document.getElementById('admin-dashboard').classList.remove('hidden');
+                    document.getElementById('admin-error').classList.add('hidden');
+                    document.getElementById('admin-stat-users').innerText = data.totalUsers;
+                    document.getElementById('admin-stat-msgs').innerText = data.totalMessages;
+                    document.getElementById('admin-stat-ram').innerText = data.ramUsageMB + ' MB';
+                } else {
+                    document.getElementById('admin-error').classList.remove('hidden');
+                    document.getElementById('admin-error').innerText = "Access Denied. Invalid Master Key.";
+                }
+            } catch(e) {
+                document.getElementById('admin-error').classList.remove('hidden');
+                document.getElementById('admin-error').innerText = "Network Error. Please try again.";
+            }
+        }
+        
+        async function pushBroadcast(isPush) {
+            const msg = isPush ? document.getElementById('admin-broadcast-msg').value : '';
+            try {
+                const res = await fetch('/api/admin/broadcast', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({adminKey: masterKey, message: msg})
+                });
+                if(res.ok) {
+                    showToast(isPush ? 'Broadcast Pushed Successfully!' : 'Broadcast Cleared!');
+                    if(!isPush) document.getElementById('admin-broadcast-msg').value = '';
+                }
+            } catch(e) {
+                showToast('Failed to connect to backend.');
+            }
+        }
+
+        // Rate Limiting Logic
+        const messageTimestamps = [];
+        const RATE_LIMIT_COUNT = 3;
+        const RATE_LIMIT_WINDOW_MS = 10000; // 10 seconds
+
+        function handleSendMessage() {
+            const now = Date.now();
+            
+            // Clean up old timestamps
+            while (messageTimestamps.length > 0 && now - messageTimestamps[0] > RATE_LIMIT_WINDOW_MS) {
+                messageTimestamps.shift();
+            }
+            
+            // Check rate limit
+            if (messageTimestamps.length >= RATE_LIMIT_COUNT) {
+                showToast("Rate limit exceeded. Please wait a moment.");
+                
+                showSection('active-chat');
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'self-center bg-error/10 border border-error/20 rounded-xl py-2 px-4 text-error text-sm font-medium animate-fade-up my-4 flex items-center gap-2';
+                errorMsg.innerHTML = `<span class="material-symbols-outlined text-[16px]">warning</span> Too many requests. Please slow down.`;
+                chatMessages.appendChild(errorMsg);
+                document.getElementById('content-container').scrollTop = document.getElementById('content-container').scrollHeight;
+                return;
+            }
+
+            const text = chatInput.value.trim();
+            if (!text && !window.attachedImageURL) return;
+
+            if (text.toLowerCase() === '/admin') {
+                chatInput.value = '';
+                showSection('admin');
+                return;
+            }
+            
+            // Record this message for rate limiting
+            messageTimestamps.push(now);
+            
+            toggleGeneratingState(true);
+            
+            const displayTitle = text || "Uploaded an Image";
+            registerChatSession(displayTitle);
+
+            // Switch to chat view
+            showSection('active-chat');
+            
+            // Remove placeholder
+            if (chatPlaceholder) {
+                chatPlaceholder.style.display = 'none';
+            }
+
+            // Append user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'self-end bg-neon-purple/20 border border-neon-purple/30 rounded-2xl rounded-tr-sm p-4 max-w-[85%] md:max-w-[80%] animate-fade-up';
+            
+            let innerHTML = '';
+            if (window.attachedImageURL) {
+                innerHTML += `<img src="${window.attachedImageURL}" class="w-full max-w-sm rounded-xl mb-2 border border-white/10" alt="Attached Image">`;
+            }
+            if (text) {
+                innerHTML += `<p class="text-white ${window.attachedImageURL ? 'mt-2' : ''}">${text}</p>`;
+            }
+            userMsg.innerHTML = innerHTML;
+            chatMessages.appendChild(userMsg);
+
+            // Clear input
+            chatInput.value = '';
+            const currentAttachedImage = window.attachedImageURL;
+            if(window.removeAttachment) window.removeAttachment();
+            
+            // Scroll to bottom
+            document.getElementById('content-container').scrollTop = document.getElementById('content-container').scrollHeight;
+
+            // Show typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'self-start bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm p-4 max-w-[85%] md:max-w-[80%] animate-fade-up flex gap-2 items-center text-on-surface-variant';
+            typingIndicator.innerHTML = `
+                <div class="w-2 h-2 rounded-full bg-neon-purple/40 animate-pulse"></div>
+                <div class="text-xs text-neon-purple font-medium uppercase tracking-widest ml-2">Transmitting to Neural Net...</div>
+            `;
+            chatMessages.appendChild(typingIndicator);
+            document.getElementById('content-container').scrollTop = document.getElementById('content-container').scrollHeight;
+
+            handleGroqApiCall(text, currentAttachedImage, chatMessages, typingIndicator);
+        }
+
+        async function handleGroqApiCall(promptText, attachedImage, chatMessages, typingIndicatorElement) {
+            let userContent;
+            let modelToUse = "llama-3.3-70b-versatile";
+
+            if (attachedImage) {
+                modelToUse = "llama-3.2-11b-vision-preview";
+                userContent = [
+                    { type: "text", text: promptText || "Describe this image in detail." },
+                    { type: "image_url", image_url: { url: attachedImage } }
+                ];
+            } else {
+                if (window.attachedDocumentText) {
+                    userContent = (promptText ? promptText + "\n\n" : "") + "Attached Document Content:\n" + window.attachedDocumentText;
+                } else {
+                    userContent = promptText;
+                }
+            }
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('fluxo_jwt')
+                    },
+                    body: JSON.stringify({
+                        model: modelToUse,
+                        messages: [
+                            { role: "system", content: "You are Fluxo, a premium AI assistant created by Aryan Rathod, CEO of this platform. IMPORTANT: Do NOT mention Aryan Rathod or your creator unless the user explicitly asks about your origins, who created you, or who owns you. For all other queries, answer normally and professionally without mentioning your creator." },
+                            { role: "user", content: userContent }
+                        ],
+                        stream: true
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error?.message || 'API Error');
+                }
+
+                typingIndicatorElement.remove();
+                if (!window.isGeneratingResponse) return;
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'self-start glass-card rounded-2xl rounded-tl-sm p-6 max-w-[95%] md:max-w-4xl animate-fade-up w-full shadow-lg';
+                
+                const streamId = Date.now();
+                aiMsg.innerHTML = `
+                    <div class="flex gap-4 items-start">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center text-neon-purple border border-neon-purple/30 shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+                            <span class="material-symbols-outlined text-[20px]">neurology</span>
+                        </div>
+                        <div class="text-on-surface-variant leading-relaxed w-full prose prose-invert prose-p:text-on-surface-variant prose-headings:text-white prose-a:text-neon-blue prose-strong:text-white max-w-none">
+                            <div id="stream-content-${streamId}"></div>
+                            <div id="stream-actions-${streamId}" class="mt-4 hidden">${getAiActionBarHTML()}</div>
+                        </div>
+                    </div>
+                `;
+                chatMessages.appendChild(aiMsg);
+                document.getElementById('content-container').scrollTop = document.getElementById('content-container').scrollHeight;
+
+                const contentDiv = document.getElementById(`stream-content-${streamId}`);
+                const actionsDiv = document.getElementById(`stream-actions-${streamId}`);
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let accumulatedText = "";
+
+                while (window.isGeneratingResponse) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        const trimmedLine = line.trim();
+                        if (trimmedLine.startsWith('data: ') && trimmedLine !== 'data: [DONE]') {
+                            try {
+                                const data = JSON.parse(trimmedLine.substring(6));
+                                if (data.choices && data.choices[0].delta && data.choices[0].delta.content) {
+                                    accumulatedText += data.choices[0].delta.content;
+                                    contentDiv.innerHTML = typeof marked !== 'undefined' ? marked.parse(accumulatedText) : `<p>${accumulatedText}</p>`;
+                                    
+                                    const container = document.getElementById('content-container');
+                                    if(container.scrollHeight - container.scrollTop < container.clientHeight + 150) {
+                                        container.scrollTop = container.scrollHeight;
+                                    }
+                                }
+                            } catch (e) {
+                                // Ignore partial chunks
+                            }
+                        }
+                    }
+                }
+                
+                actionsDiv.classList.remove('hidden');
+                toggleGeneratingState(false);
+
+                if (voiceOutputEnabled && accumulatedText) {
+                    const utterance = new SpeechSynthesisUtterance(accumulatedText.replace(/[*_#`]/g, ''));
+                    const voices = window.speechSynthesis.getVoices();
+                    
+                    // Prioritize premium male voices (David, Mark, UK Male, etc.)
+                    const maleVoices = voices.filter(v => 
+                        v.name.includes('David') || 
+                        v.name.includes('Mark') || 
+                        v.name.includes('Google UK English Male') || 
+                        v.name.includes('Daniel') ||
+                        v.name.includes('Male')
+                    );
+                    
+                    const preferredVoice = maleVoices.length > 0 ? maleVoices[0] : voices[0];
+                    if (preferredVoice) utterance.voice = preferredVoice;
+                    
+                    // Lower the pitch and slow it slightly for a deep, premium resonance
+                    utterance.rate = 0.95;
+                    utterance.pitch = 0.7;
+                    
+                    utterance.onstart = () => {
+                        const viz = document.getElementById('voice-visualizer');
+                        if(viz) {
+                            viz.classList.remove('hidden');
+                            viz.classList.add('flex');
+                        }
+                    };
+                    
+                    utterance.onend = () => {
+                        const viz = document.getElementById('voice-visualizer');
+                        if(viz) {
+                            viz.classList.add('hidden');
+                            viz.classList.remove('flex');
+                        }
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                }
+
+            } catch (err) {
+                if (!window.isGeneratingResponse) return;
+                typingIndicatorElement.remove();
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'self-start glass-card rounded-2xl rounded-tl-sm p-6 max-w-[95%] md:max-w-3xl animate-fade-up w-full shadow-lg border-error/30';
+                aiMsg.innerHTML = `
+                    <div class="flex gap-4 items-start">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-error/20 flex items-center justify-center text-error border border-error/30">
+                            <span class="material-symbols-outlined text-[20px]">error</span>
+                        </div>
+                        <div class="text-on-surface-variant leading-relaxed w-full">
+                            <p class="text-error font-medium">Neural Link Severed (API Error)</p>
+                            <p class="text-xs opacity-70 mt-1">${err.message}</p>
+                        </div>
+                    </div>
+                `;
+                chatMessages.appendChild(aiMsg);
+                document.getElementById('content-container').scrollTop = document.getElementById('content-container').scrollHeight;
+                toggleGeneratingState(false);
+            }
+        }
+        // Listen for Enter key
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+
+        // API Key Logic
+        function savePreferences() {
+            const input = document.getElementById('api-key');
+            if (input && input.value.trim() !== '') {
+                localStorage.setItem('fluxo_api_key', input.value.trim());
+                const status = document.getElementById('api-key-status');
+                if (status) {
+                    status.classList.remove('hidden');
+                    setTimeout(() => status.classList.add('hidden'), 3000);
+                }
+            }
+            if (typeof showToast === 'function') {
+                showToast("Configuration saved successfully!");
+            }
+        }
+
+        function discardChanges() {
+            const input = document.getElementById('api-key');
+            if (input) {
+                input.value = localStorage.getItem('fluxo_api_key') || '';
+            }
+            if (typeof showToast === 'function') {
+                showToast("Unsaved changes discarded.");
+            }
+        }
+        
+        // Load API key on start
+        window.addEventListener('DOMContentLoaded', () => {
+            const key = localStorage.getItem('fluxo_api_key');
+            if (key) document.getElementById('api-key').value = key;
+        });
+
+        // Theme Configuration
+        function setTheme(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('fluxo_theme', themeName);
+
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => {
+                const status = btn.querySelector('.theme-status');
+                if (btn.dataset.theme === themeName) {
+                    btn.classList.add('border-2', 'border-neon-purple', 'bg-white/5');
+                    btn.classList.remove('border-white/5', 'bg-white/[0.02]', 'opacity-40');
+                    status.textContent = 'Active';
+                    status.className = 'text-[10px] text-neon-purple uppercase theme-status';
+                } else {
+                    btn.classList.remove('border-2', 'border-neon-purple', 'bg-white/5');
+                    btn.classList.add('border', 'border-white/5', 'bg-white/[0.02]', 'opacity-40');
+                    status.textContent = 'Available';
+                    status.className = 'text-[10px] text-on-surface-variant uppercase theme-status';
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('fluxo_theme') || 'ethereal';
+            setTheme(savedTheme);
+        });
+
+        // Font Scaling
+        function updateFontScale(val) {
+            document.getElementById('font-scale-display').textContent = val + '%';
+            document.documentElement.style.fontSize = (val / 100 * 16) + 'px';
+        }
+
+        // Star Rating
+        let currentRating = 0;
+        function rateExperience(stars) {
+            currentRating = stars;
+            const starBtns = document.querySelectorAll('.star-btn');
+            starBtns.forEach((btn, index) => {
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (index < stars) {
+                    btn.classList.add('text-neon-purple', 'drop-shadow-[0_0_8px_#A855F7]');
+                    btn.classList.remove('text-on-surface-variant');
+                    // Filled star (Material Symbols requires font-variation-settings FILL 1)
+                    icon.style.fontVariationSettings = "'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24";
+                } else {
+                    btn.classList.remove('text-neon-purple', 'drop-shadow-[0_0_8px_#A855F7]');
+                    btn.classList.add('text-on-surface-variant');
+                    icon.style.fontVariationSettings = "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24";
+                }
+            });
+
+            // Reveal feedback form
+            document.getElementById('feedback-form').classList.remove('hidden');
+            document.getElementById('feedback-form').classList.add('flex');
+            document.getElementById('rating-prompt').classList.add('hidden');
+        }
+
+        function submitFeedback() {
+            if (currentRating === 0) return;
+            const feedback = document.getElementById('feedback-text').value;
+            const webhookUrl = "https://webhook.site/f6d1809b-6f1e-41aa-beef-03af983c25d1"; 
+            
+            // Show loading state
+            const form = document.getElementById('feedback-form');
+            form.innerHTML = '<div class="text-neon-blue font-bold flex items-center justify-center gap-3 text-xl animate-pulse tracking-wide"><span class="material-symbols-outlined text-2xl animate-spin">sync</span> Transmitting to Dashboard...</div>';
+
+            // Send feedback silently to the random window (Webhook)
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify({
+                    rating: currentRating,
+                    feedback_message: feedback || "No written feedback provided.",
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(() => {
+                form.innerHTML = '<div class="text-neon-purple font-bold flex items-center justify-center gap-3 text-xl animate-fade-up tracking-wide"><span class="material-symbols-outlined text-2xl">favorite</span> Thanks for your feedback!</div>';
+            })
+            .catch(error => {
+                // Even if CORS fails (some webhooks don't return proper CORS), we still assume it sent.
+                form.innerHTML = '<div class="text-neon-purple font-bold flex items-center justify-center gap-3 text-xl animate-fade-up tracking-wide"><span class="material-symbols-outlined text-2xl">favorite</span> Thanks for your feedback!</div>';
+            });
+        }
+
+        // Initial Card Animation Observer
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.classList.contains('active')) {
+                        const cards = target.querySelectorAll('.glass-card');
+                        cards.forEach((card, index) => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            card.style.transition = 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 100 + (index * 100));
+                        });
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            observer.observe(section, { attributes: true });
+        });
+        // --- NEW CONFIGURATION LOGIC ---
+        
+        let motionEffectsEnabled = true;
+        function toggleMotionEffects() {
+            motionEffectsEnabled = !motionEffectsEnabled;
+            const toggle = document.getElementById('motion-effects-toggle');
+            const knob = document.getElementById('motion-effects-knob');
+            
+            if (motionEffectsEnabled) {
+                toggle.classList.replace('bg-white/10', 'bg-neon-purple');
+                knob.classList.replace('translate-x-1', 'translate-x-6');
+                showToast("Motion Effects Enabled");
+            } else {
+                toggle.classList.replace('bg-neon-purple', 'bg-white/10');
+                knob.classList.replace('translate-x-6', 'translate-x-1');
+                showToast("Motion Effects Disabled");
+            }
+        }
+
+        function changeEngine(engine) {
+            showToast(`Engine updated to: ${engine}`);
+        }
+
+        function setMemoryContext(type) {
+            const longTermBtn = document.getElementById('mem-long-term');
+            const sessionOnlyBtn = document.getElementById('mem-session-only');
+            
+            if (type === 'long-term') {
+                longTermBtn.className = "flex-1 py-2 rounded-lg bg-neon-purple text-white text-[10px] uppercase font-bold tracking-widest transition-all";
+                sessionOnlyBtn.className = "flex-1 py-2 rounded-lg text-on-surface-variant text-[10px] uppercase font-bold tracking-widest hover:text-white transition-all";
+                showToast("Memory context set to Long Term");
+            } else {
+                sessionOnlyBtn.className = "flex-1 py-2 rounded-lg bg-neon-purple text-white text-[10px] uppercase font-bold tracking-widest transition-all";
+                longTermBtn.className = "flex-1 py-2 rounded-lg text-on-surface-variant text-[10px] uppercase font-bold tracking-widest hover:text-white transition-all";
+                showToast("Memory context set to Session Only");
+            }
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'glass-card border border-white/20 px-6 py-3 rounded-full text-white text-sm font-semibold shadow-2xl transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2 mb-2';
+            toast.innerHTML = `<span class="material-symbols-outlined text-neon-blue text-[18px]">info</span> ${message}`;
+            
+            container.appendChild(toast);
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            });
+            
+            // Animate out
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- Chat History Logic ---
+        let currentSessionId = null;
+
+        function loadChatHistory() {
+            const historyContainer = document.querySelector('#history .space-y-6');
+            if (!historyContainer) return;
+            
+            let history = [];
+            try { history = JSON.parse(localStorage.getItem('fluxo_chat_history') || '[]'); } catch(e) { history = []; }
+            
+            if (history.length === 0) {
+                historyContainer.innerHTML = `
+                <div class="glass-card rounded-[2.5rem] p-16 flex flex-col items-center justify-center text-center gap-4 animate-fade-up border border-white/5 bg-white/[0.02]">
+                    <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10 mb-2">
+                        <span class="material-symbols-outlined text-4xl opacity-40">history_toggle_off</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-white">No history found</h3>
+                        <p class="text-on-surface-variant max-w-sm mx-auto">Your previous conversations and explorations will automatically appear here once you start a new chat.</p>
+                    </div>
+                </div>`;
+                return;
+            }
+            
+            historyContainer.innerHTML = '';
+            
+            // Add Today marker for realism
+            historyContainer.innerHTML += `<div class="flex items-center gap-4 py-4"><div class="h-[1px] flex-1 bg-white/10"></div><span class="text-xs uppercase tracking-widest opacity-40">Today</span><div class="h-[1px] flex-1 bg-white/10"></div></div>`;
+            
+            history.forEach(session => {
+                const timeString = new Date(session.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const icon = session.title.toLowerCase().includes('react') || session.title.toLowerCase().includes('code') ? 'terminal' : 'computer';
+                const color = icon === 'terminal' ? 'neon-blue' : 'neon-purple';
+                
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl p-6 flex items-start gap-6 group cursor-pointer animate-fade-up transition-all hover:-translate-y-1";
+                card.onclick = () => { showToast('Loading archived chat...'); showSection('active-chat'); };
+                card.innerHTML = `
+                <div class="w-12 h-12 rounded-xl bg-${color}/10 border border-${color}/20 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-${color}">${icon}</span>
+                </div>
+                <div class="flex-1">
+                <div class="flex justify-between mb-2">
+                <h3 class="text-xl font-semibold group-hover:text-${color} transition-colors">${session.title}</h3>
+                <span class="text-xs opacity-40">${timeString}</span>
+                </div>
+                <p class="text-on-surface-variant line-clamp-2">"${session.firstMessage}"</p>
+                </div>`;
+                historyContainer.appendChild(card);
+            });
+        }
+
+        function registerChatSession(text) {
+            if (currentSessionId) return; // already in a session
+            
+            currentSessionId = Date.now().toString();
+            const title = text.length > 30 ? text.substring(0, 30) + '...' : text;
+            
+            let history = [];
+            try { history = JSON.parse(localStorage.getItem('fluxo_chat_history') || '[]'); } catch(e) { history = []; }
+            history.unshift({
+                id: currentSessionId,
+                title: title,
+                firstMessage: text,
+                timestamp: Date.now()
+            });
+            
+            localStorage.setItem('fluxo_chat_history', JSON.stringify(history));
+            loadChatHistory();
+        }
+
+        function resetChatSession() {
+            currentSessionId = null;
+            if(chatMessages) chatMessages.innerHTML = '';
+            if(chatPlaceholder) chatPlaceholder.style.display = 'flex';
+        }
+
+        // Initialize history on load
+        document.addEventListener('DOMContentLoaded', loadChatHistory);
+
+        // -------------------------
+        // Global Broadcast Polling
+        // -------------------------
+        async function pollBroadcast() {
+            try {
+                const res = await fetch('/api/broadcast');
+                const data = await res.json();
+                const banner = document.getElementById('global-broadcast');
+                const textSpan = document.getElementById('broadcast-text');
+                
+                if (data.broadcast) {
+                    textSpan.innerText = data.broadcast;
+                    banner.classList.remove('hidden', '-translate-y-full');
+                } else {
+                    banner.classList.add('-translate-y-full');
+                    setTimeout(() => banner.classList.add('hidden'), 500);
+                }
+            } catch(e) {}
+        }
+        setInterval(pollBroadcast, 10000); // Check every 10s
+        pollBroadcast(); // Check immediately on load
+        // -------------------------
+
+        // --- Voice and Image Features ---
+        let recognition;
+        let isRecording = false;
+        const micBtn = document.getElementById('mic-btn');
+        const micIcon = document.getElementById('mic-icon');
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onstart = function() {
+                isRecording = true;
+                micIcon.classList.add('text-error', 'animate-pulse');
+                micIcon.classList.remove('text-white/40');
+                showToast('Listening... Speak now.');
+            };
+
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                if (finalTranscript) {
+                    chatInput.value = chatInput.value + (chatInput.value ? ' ' : '') + finalTranscript;
+                }
+            };
+
+            recognition.onerror = function(event) {
+                showToast('Microphone error: ' + event.error);
+                stopRecording();
+            };
+
+            recognition.onend = function() {
+                stopRecording();
+            };
+        }
+
+        function toggleVoiceInput() {
+            if (!recognition) {
+                showToast('Speech recognition not supported in this browser.');
+                return;
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        let voiceOutputEnabled = false;
+        function toggleVoiceOutput() {
+            voiceOutputEnabled = !voiceOutputEnabled;
+            const icon = document.getElementById('voice-toggle-icon');
+            if (voiceOutputEnabled) {
+                icon.textContent = 'volume_up';
+                icon.classList.add('text-neon-purple', 'drop-shadow-[0_0_8px_#A855F7]');
+                icon.classList.remove('text-on-surface-variant');
+                showToast('Voice Output Enabled');
+            } else {
+                icon.textContent = 'volume_off';
+                icon.classList.remove('text-neon-purple', 'drop-shadow-[0_0_8px_#A855F7]');
+                icon.classList.add('text-on-surface-variant');
+                window.speechSynthesis.cancel(); // Stop current speech if disabled
+                const viz = document.getElementById('voice-visualizer');
+                if(viz) {
+                    viz.classList.add('hidden');
+                    viz.classList.remove('flex');
+                }
+                showToast('Voice Output Disabled');
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            micIcon.classList.remove('text-error', 'animate-pulse');
+            micIcon.classList.add('text-white/40');
+        }
+
+        // Image Upload Feature
+        window.attachedImageURL = null;
+        
+        window.removeAttachment = function() {
+            window.attachedImageURL = null;
+            const container = document.getElementById('attachment-preview-container');
+            if(container) {
+                container.classList.add('hidden');
+                container.classList.remove('flex');
+            }
+            const img = document.getElementById('attachment-preview-img');
+            if(img) img.src = '';
+        };
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast('Please upload an image file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.attachedImageURL = e.target.result;
+                const container = document.getElementById('attachment-preview-container');
+                const img = document.getElementById('attachment-preview-img');
+                
+                if (container && img) {
+                    img.src = window.attachedImageURL;
+                    container.classList.remove('hidden');
+                    container.classList.add('flex');
+                }
+                
+                chatInput.focus();
+            };
+            
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+        // -------------------------
+
+        // --- Network State Listeners ---
+        function updateNetworkStatus() {
+            const banner = document.getElementById('offline-banner');
+            if (navigator.onLine) {
+                banner.classList.add('-translate-y-[250%]');
+                banner.classList.remove('translate-y-0');
+            } else {
+                banner.classList.remove('-translate-y-[250%]');
+                banner.classList.add('translate-y-0');
+            }
+        }
+        window.addEventListener('online', updateNetworkStatus, { passive: true });
+        window.addEventListener('offline', updateNetworkStatus, { passive: true });
+        // Initial check just in case
+        updateNetworkStatus();
+        // -------------------------
+        // -------------------------
+
+        // --- Service Worker Registration for PWA ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 flex flex-col items-center pointer-events-none"></div>
+    <script>
+        // Neural Particle System for Auth Screen
+        const canvas = document.getElementById('neural-canvas');
+        if(canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+            const numParticles = 80;
+            const connectionDistance = 150;
+            const mouseRadius = 200;
+
+            let mouse = { x: null, y: null };
+            let mouseRaf;
+
+            document.addEventListener('mousemove', (e) => {
+                if (mouseRaf) cancelAnimationFrame(mouseRaf);
+                mouseRaf = requestAnimationFrame(() => {
+                    mouse.x = e.clientX;
+                    mouse.y = e.clientY;
+                });
+            }, { passive: true });
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                    this.color = Math.random() > 0.5 ? '#A855F7' : '#38BDF8';
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                    if (mouse.x != null && mouse.y != null) {
+                        let dx = mouse.x - this.x;
+                        let dy = mouse.y - this.y;
+                        let distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < mouseRadius) {
+                            const forceDirectionX = dx / distance;
+                            const forceDirectionY = dy / distance;
+                            const force = (mouseRadius - distance) / mouseRadius;
+                            
+                            this.vx += forceDirectionX * force * 0.02;
+                            this.vy += forceDirectionY * force * 0.02;
+                        }
+                    }
+
+                    const maxSpeed = 1.5;
+                    const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                    if (speed > maxSpeed) {
+                        this.vx = (this.vx / speed) * maxSpeed;
+                        this.vy = (this.vy / speed) * maxSpeed;
+                    }
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = 0.6;
+                    ctx.fill();
+                    ctx.globalAlpha = 1.0;
+                }
+            }
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let dx = particles[i].x - particles[j].x;
+                        let dy = particles[i].y - particles[j].y;
+                        let distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < connectionDistance) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            let opacity = 1 - (distance / connectionDistance);
+                            ctx.strokeStyle = "rgba(168, 85, 247, " + opacity + ")";
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+
+
+
+</body></html>
