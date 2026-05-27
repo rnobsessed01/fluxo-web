@@ -1008,6 +1008,47 @@ Sign Out
             }
         }
         
+        // ---- BROADCAST SYSTEM ----
+        // Check and show broadcast on every page load
+        async function checkBroadcast() {
+            const banner = document.getElementById('global-broadcast');
+            const textEl = document.getElementById('broadcast-text');
+            if (!banner || !textEl) return;
+
+            // First: show cached broadcast instantly (even if server is sleeping)
+            const cached = localStorage.getItem('fluxo_broadcast');
+            if (cached) {
+                textEl.textContent = cached;
+                banner.classList.remove('hidden');
+                banner.style.transform = 'translateY(0)';
+            }
+
+            // Then: fetch live broadcast from server to keep it in sync
+            try {
+                const res = await fetch('/api/broadcast');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.broadcast) {
+                        // Server has an active broadcast — update cache and show
+                        localStorage.setItem('fluxo_broadcast', data.broadcast);
+                        textEl.textContent = data.broadcast;
+                        banner.classList.remove('hidden');
+                        banner.style.transform = 'translateY(0)';
+                    } else {
+                        // Server says no active broadcast — clear cache and hide
+                        localStorage.removeItem('fluxo_broadcast');
+                        banner.style.transform = 'translateY(-100%)';
+                        setTimeout(() => banner.classList.add('hidden'), 500);
+                    }
+                }
+            } catch (e) {
+                // Server sleeping — keep showing cached broadcast if any
+            }
+        }
+
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', checkBroadcast);
+
         async function pushBroadcast(isPush) {
             const msg = isPush ? document.getElementById('admin-broadcast-msg').value : '';
             try {
@@ -1018,7 +1059,26 @@ Sign Out
                 });
                 if(res.ok) {
                     showToast(isPush ? 'Broadcast Pushed Successfully!' : 'Broadcast Cleared!');
-                    if(!isPush) document.getElementById('admin-broadcast-msg').value = '';
+                    if (isPush && msg) {
+                        // Save to localStorage so it persists even if server restarts
+                        localStorage.setItem('fluxo_broadcast', msg);
+                        const banner = document.getElementById('global-broadcast');
+                        const textEl = document.getElementById('broadcast-text');
+                        if (banner && textEl) {
+                            textEl.textContent = msg;
+                            banner.classList.remove('hidden');
+                            banner.style.transform = 'translateY(0)';
+                        }
+                    } else {
+                        // Clear broadcast from cache and hide banner
+                        localStorage.removeItem('fluxo_broadcast');
+                        document.getElementById('admin-broadcast-msg').value = '';
+                        const banner = document.getElementById('global-broadcast');
+                        if (banner) {
+                            banner.style.transform = 'translateY(-100%)';
+                            setTimeout(() => banner.classList.add('hidden'), 500);
+                        }
+                    }
                 }
             } catch(e) {
                 showToast('Failed to connect to backend.');
