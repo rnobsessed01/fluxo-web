@@ -850,31 +850,12 @@ Sign Out
         }
 
         // Mobile Sidebar Toggle
-        // Auto-check authentication on load
-        window.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('fluxo_jwt');
-            if(!token) {
-                window.location.href = 'login.html';
-                return;
-            }
-            try {
-                const res = await fetch('/api/auth/status', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                if (!res.ok) {
-                    throw new Error('Invalid or banned');
-                }
-            } catch (err) {
-                localStorage.removeItem('fluxo_jwt');
-                window.location.href = 'login.html';
-            }
-        });
 
         
 
         function logout() {
             localStorage.removeItem('fluxo_jwt');
-            window.location.href = 'login.html';
+            showToast('Logged out.');
         }
 
         async function loadChatHistory() {
