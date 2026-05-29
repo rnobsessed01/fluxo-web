@@ -36,13 +36,15 @@ wss.on('connection', (ws) => {
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
-// Force no-caching for index.html and sw.js to ensure immediate updates
+// Force no-caching for key HTML files and sw.js, cache static assets aggressively
 app.use(express.static(__dirname, {
     setHeaders: (res, path) => {
-        if (path.endsWith('index.html') || path.endsWith('sw.js')) {
+        if (path.endsWith('index.html') || path.endsWith('sw.js') || path.endsWith('landing.html') || path.endsWith('login.html') || path.endsWith('admin.html') || path.endsWith('manifest.json')) {
             res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
             res.setHeader('Pragma', 'no-cache');
             res.setHeader('Expires', '0');
+        } else if (/\.(jpg|jpeg|png|gif|svg|webp|avif|ico|css|js|woff|woff2|ttf|eot)$/i.test(path)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
         }
     }
 }));

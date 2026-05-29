@@ -3,10 +3,29 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Fluxo - Secure Neural Workspace</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" fetchpriority="high">
+<link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms,container-queries" as="script" fetchpriority="high">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" fetchpriority="high"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
+        :root {
+            --color-orb-1: #06B6D4;
+            --color-orb-2: #E2E8F0;
+            --color-bg: #020617;
+        }
+        @media (dynamic-range: high) {
+            :root {
+                --color-orb-1: color(display-p3 0.0 0.72 0.85);
+                --color-orb-2: color(display-p3 0.88 0.91 0.94);
+                --color-bg: color(display-p3 0.01 0.02 0.08);
+            }
+        }
+        body {
+            background-color: var(--color-bg) !important;
+        }
         .material-symbols-outlined {
             font-family: 'Material Symbols Outlined';
             font-weight: normal;
@@ -241,13 +260,13 @@
         }
     </script>
 </head>
-<body class="bg-[#020617] text-on-surface min-h-screen flex flex-col overflow-x-hidden font-body-md relative selection:bg-primary/30 selection:text-primary">
+<body class="text-on-surface min-h-screen flex flex-col overflow-x-hidden font-body-md relative selection:bg-primary/30 selection:text-primary" style="background-color: var(--color-bg)">
 <div class="fixed inset-0 bg-noise z-[-1]"></div>
 <canvas id="neural-canvas"></canvas>
 <!-- Background Orbs -->
-<div class="fixed top-1/2 left-1/2 w-[800px] h-[800px] bg-[#06B6D4] rounded-full blur-[200px] opacity-15 animate-pulse-orb pointer-events-none transform-origin-center -translate-x-1/2 -translate-y-1/2 -z-10 mix-blend-screen parallax-orb" data-parallax="-0.02"></div>
-<div class="fixed top-1/4 left-[-100px] w-[600px] h-[600px] bg-[#E2E8F0] rounded-full blur-[150px] opacity-15 animate-drift-orb pointer-events-none -z-10 mix-blend-overlay parallax-orb" data-parallax="0.03"></div>
-<div class="fixed top-1/2 left-1/2 w-[400px] h-[400px] bg-[#06B6D4] rounded-full blur-[100px] opacity-20 animate-orbit-orb pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10 mix-blend-screen parallax-orb" data-parallax="-0.05"></div>
+<div class="fixed top-1/2 left-1/2 w-[800px] h-[800px] rounded-full blur-[200px] opacity-15 animate-pulse-orb pointer-events-none transform-origin-center -translate-x-1/2 -translate-y-1/2 -z-10 mix-blend-screen parallax-orb" style="background-color: var(--color-orb-1)" data-parallax="-0.02"></div>
+<div class="fixed top-1/4 left-[-100px] w-[600px] h-[600px] rounded-full blur-[150px] opacity-15 animate-drift-orb pointer-events-none -z-10 mix-blend-overlay parallax-orb" style="background-color: var(--color-orb-2)" data-parallax="0.03"></div>
+<div class="fixed top-1/2 left-1/2 w-[400px] h-[400px] rounded-full blur-[100px] opacity-20 animate-orbit-orb pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10 mix-blend-screen parallax-orb" style="background-color: var(--color-orb-1)" data-parallax="-0.05"></div>
 <header class="flex justify-between items-center w-full px-10 py-6 max-w-full mx-auto z-50 backdrop-blur-xl bg-white/5 border-b border-white/10 top-0">
 <div class="font-headline-md text-headline-md text-on-surface tracking-tighter">Fluxo</div>
 <nav class="flex items-center gap-6">
@@ -357,12 +376,20 @@
 
         // Atmospheric Nordic Canvas Animation
         const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
+        const isHDR = window.matchMedia('(dynamic-range: high)').matches;
+        const isP3 = window.matchMedia('(color-gamut: p3)').matches;
+        const ctx = canvas.getContext('2d', { colorSpace: isP3 ? 'display-p3' : 'srgb' });
         let width, height;
 
         function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.scale(dpr, dpr);
         }
 
         window.addEventListener('resize', resize);
@@ -403,7 +430,11 @@
                 let glisten = Math.sin(this.glistenPhase) * 0.4;
                 let currentOpacity = Math.max(0, Math.min(1, this.baseOpacity + glisten));
 
-                ctx.fillStyle = `rgba(226, 232, 240, ${currentOpacity})`;
+                if (isP3) {
+                    ctx.fillStyle = `color(display-p3 0.88 0.91 0.94 / ${currentOpacity})`;
+                } else {
+                    ctx.fillStyle = `rgba(226, 232, 240, ${currentOpacity})`;
+                }
                 
                 ctx.beginPath();
                 ctx.moveTo(0, -this.size);

@@ -2,14 +2,18 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 <title>Fluxo - Ethereal AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700&display=swap" fetchpriority="high">
+<link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography" as="script" fetchpriority="high">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/aida/ADBb0uivO0pb_MEWLa2-ezUe6LbGmRhdaxpRmj0z7xxMH29ha82uVUFH7Wxdng8Qj6qYjXnLV0Eok-NKcmWWIca4JYi7LAq-SCBeiVpTVZ4Xw42XOB24AoNUnVKTO6ZmDhuixehOi9vlzqD0_MqKuOEj9HijPUC1YIz4MJiFp2n3ceH5ZHcU0DIsh4-xFIig1iDP1w9Z1dlVXTCWZBci3Ya8jeuCAPnSD41KHxaI6lFYCdK0ibzQAyuMG513hr5v">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography" fetchpriority="high"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
         html, body {
@@ -149,6 +153,62 @@
             --color-bg-deep: #06060E;
             --color-glow: #2E1065;
             --color-primary-rgb: 168, 85, 247;
+        }
+
+        /* ── HDR+ P3 COLOR SPECTRUM FALLBACKS ── */
+        @media (dynamic-range: high) {
+            :root {
+                --color-primary: color(display-p3 0.68 0.28 0.98);
+                --color-secondary: color(display-p3 0.12 0.75 0.99);
+                --color-bg-deep: color(display-p3 0.01 0.01 0.04);
+                --color-glow: color(display-p3 0.16 0.03 0.45);
+            }
+            [data-theme="obsidian"] {
+                --color-primary: color(display-p3 0.48 0.52 0.98);
+                --color-secondary: color(display-p3 0.78 0.47 0.99);
+                --color-bg-deep: color(display-p3 0.0 0.0 0.0);
+                --color-glow: color(display-p3 0.1 0.08 0.3);
+            }
+            [data-theme="cyber-cyan"] {
+                --color-primary: color(display-p3 0.0 0.72 0.85);
+                --color-secondary: color(display-p3 0.2 0.48 0.98);
+                --color-bg-deep: color(display-p3 0.0 0.1 0.15);
+                --color-glow: color(display-p3 0.0 0.18 0.25);
+            }
+            [data-theme="ethereal"] {
+                --color-primary: color(display-p3 0.68 0.28 0.98);
+                --color-secondary: color(display-p3 0.12 0.75 0.99);
+                --color-bg-deep: color(display-p3 0.01 0.01 0.04);
+                --color-glow: color(display-p3 0.16 0.03 0.45);
+            }
+        }
+
+        /* ── HDR+ P3 COLOR SPECTRUM FALLBACKS ── */
+        @media (dynamic-range: high) {
+            :root {
+                --color-primary: color(display-p3 0.68 0.28 0.98);
+                --color-secondary: color(display-p3 0.12 0.75 0.99);
+                --color-bg-deep: color(display-p3 0.01 0.01 0.04);
+                --color-glow: color(display-p3 0.16 0.03 0.45);
+            }
+            [data-theme="obsidian"] {
+                --color-primary: color(display-p3 0.48 0.52 0.98);
+                --color-secondary: color(display-p3 0.78 0.47 0.99);
+                --color-bg-deep: color(display-p3 0.0 0.0 0.0);
+                --color-glow: color(display-p3 0.1 0.08 0.3);
+            }
+            [data-theme="cyber-cyan"] {
+                --color-primary: color(display-p3 0.0 0.72 0.85);
+                --color-secondary: color(display-p3 0.2 0.48 0.98);
+                --color-bg-deep: color(display-p3 0.0 0.1 0.15);
+                --color-glow: color(display-p3 0.0 0.18 0.25);
+            }
+            [data-theme="ethereal"] {
+                --color-primary: color(display-p3 0.68 0.28 0.98);
+                --color-secondary: color(display-p3 0.12 0.75 0.99);
+                --color-bg-deep: color(display-p3 0.01 0.01 0.04);
+                --color-glow: color(display-p3 0.16 0.03 0.45);
+            }
         }
 
         .theme-bg {
@@ -291,6 +351,19 @@
         }
         .prompt-chip:active { transform: scale(0.98); }
 
+        /* ── 60/120 FPS RENDERING OPTIMIZATION (GPU & CONTENT VISIBILITY) ── */
+        #history, #notebooks, #library, #settings, #admin, #help {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
+        }
+
+        /* Hardware-accelerated layers */
+        .content-section, .glass-card, #toast-container, .modal-backdrop, .modal-content {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
     </style>
     <script id="tailwind-config">
         tailwind.config = {
@@ -414,7 +487,10 @@
 <div class="absolute right-0 top-full mt-4 w-80 p-6 glass-card rounded-3xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
 <div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
 <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-neon-purple shadow-[0_0_15px_rgba(168,85,247,0.3)] shrink-0">
-<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ">
+<picture>
+<source srcset="https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ=w180-rw 3x, https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ=w120-rw 2x, https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ=w60-rw 1x" type="image/webp">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT7q1mZ45fF5GOgJpDki6-9BQdeuxhvmv_6GWm8ReBay5LLG2cAXCS3y6KUm4koCaldvkAX4-4HEhYAYfDBID29JSnBXk42tHriNo8sVVTNjlc5it22V1mb4aBNHoI4UdTbXnlgVLr3Ttz7EDnlY9iSwvj51XCMK4HW02sbSdtqdPz_mQLqHMhSgkfm1xaNd5RLTKfCw2GgrdKWk-V1mCXI4KdELEhjCQqa65ZMKP3fOqrw_-eigQ7fKZYjuQDuwq4BQ4YjzUGdpNQ" alt="Alex Vance">
+</picture>
 </div>
 <div>
 <h4 class="font-bold text-white text-lg">Alex Vance</h4>
@@ -529,7 +605,10 @@ Sign Out
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <div class="glass-card rounded-3xl p-6 group cursor-pointer hover:-translate-y-1" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
 <div class="aspect-video rounded-xl overflow-hidden mb-6 bg-obsidian-deep border border-white/5">
-<img class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak">
+<picture>
+<source srcset="https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak=w1200-rw 3x, https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak=w800-rw 2x, https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak=w400-rw 1x" type="image/webp">
+<img class="w-full h-full object-cover opacity-60" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8jw26t_f0nwVNCEXlpt_OBplIT0PINyQDHjQSJjjEvnA_IiMfpK8XdfvaRTfkJcPbJo4qOx6RDG6caK5cZUxGOgrV5TKkV2txstfJKfkkYzr5_8UFTXVlv4Rgy3cMUpX9TmVSnPCLrhW_HM9QRDgepSamrl4U-Qz64MD2fN0o8ExejlBCBxKZBWtwpziHh_fW0TrAAH-ugBAsQhPf1zU8eEgtapZW78zI_uUIOk6kAslf70RFMLIYeDmLQhNNwXdel0yx3si5Piak" alt="Quantum Ledger Protocol">
+</picture>
 </div>
 <h3 class="text-xl font-bold mb-2 group-hover:text-neon-purple transition-colors">Quantum Ledger Protocol</h3>
 <p class="text-on-surface-variant text-sm line-clamp-2 mb-4">In-depth analysis of zero-knowledge proofs and their integration into scalable layer 2 environments.</p>
@@ -537,7 +616,10 @@ Sign Out
 </div>
 <div class="glass-card rounded-3xl p-6 group cursor-pointer hover:-translate-y-1" style="opacity: 1; transform: translateY(0px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
 <div class="aspect-video rounded-xl overflow-hidden mb-6 bg-obsidian-deep border border-white/5">
-<img class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx">
+<picture>
+<source srcset="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx=w1200-rw 3x, https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx=w800-rw 2x, https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx=w400-rw 1x" type="image/webp">
+<img class="w-full h-full object-cover opacity-60" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT4sXrYhtkqP-0ft_EtDLiJhmuVA_PwsNkgxVXGt7JgW1DpsTvj4j7yZiJWCRmsuvAj3uDHHw_D2ymeriM2aUZah2SJVNRZqfZRqiL3m6HXJCgUab3sMhF478-p2sa4wFBfwTcG6AF4q3Qtix-uVAvk7_NRzuvbI1CGOvCw43KR8q7vvpQEWjrkKU8J7r3Xk99dT8fxohDp7bEoeI08iqkYrabp4EwTRzm5Shci7-zph11rBwsloOpkAvAdmjxjZGV82E7-vYLXMx" alt="Neural Architecture v4">
+</picture>
 </div>
 <h3 class="text-xl font-bold mb-2 group-hover:text-neon-blue transition-colors">Neural Architecture v4</h3>
 <p class="text-on-surface-variant text-sm line-clamp-2 mb-4">Technical specifications for the upcoming transformer-based core update.</p>

@@ -5,9 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fluxo — The AI That Thinks With You</title>
 <meta name="description" content="Fluxo is the next-generation AI workspace with voice mode, PDF analysis, and a stunning interface unlike anything else.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700;800&family=Geist:wght@400;500;600&display=swap" fetchpriority="high">
+<link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms" as="script" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Sora:wght@400;600;700;800&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms" fetchpriority="high"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,6 +21,16 @@
     --color-bg-deep: #06060E;
     --color-glow: #2E1065;
     --color-primary-rgb: 168, 85, 247;
+  }
+
+  /* ── HDR+ P3 COLOR SPECTRUM FALLBACKS ── */
+  @media (dynamic-range: high) {
+    :root {
+      --color-primary: color(display-p3 0.68 0.28 0.98);
+      --color-secondary: color(display-p3 0.12 0.75 0.99);
+      --color-bg-deep: color(display-p3 0.01 0.01 0.04);
+      --color-glow: color(display-p3 0.16 0.03 0.45);
+    }
   }
 
   html { scroll-behavior: smooth; }
@@ -32,7 +46,7 @@
   /* ── AMBIENT GLOW BG ── */
   .bg-glow {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, #2E1065 0%, transparent 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--color-glow) 0%, transparent 70%);
     animation: pulse-bg 15s ease-in-out infinite;
   }
   @keyframes pulse-bg {
@@ -470,6 +484,31 @@
   .reveal { opacity: 0; transform: translateY(28px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* ── 60/120 FPS RENDERING SMOOTHNESS (GPU & CONTENT VISIBILITY) ── */
+  #features {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1000px;
+  }
+  #how {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
+  #pricing {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+  }
+  .cta-wrap {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
+  /* Hardware-accelerated layers */
+  .bg-glow, .reveal, .typing-dot, .feature-card {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
@@ -695,10 +734,21 @@
 <script>
   // ── CANVAS PARTICLES ──
   const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
+  const isHDR = window.matchMedia('(dynamic-range: high)').matches;
+  const isP3 = window.matchMedia('(color-gamut: p3)').matches;
+  const ctx = canvas.getContext('2d', { colorSpace: isP3 ? 'display-p3' : 'srgb' });
   let W, H, particles = [];
 
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+  }
   window.addEventListener('resize', resize); resize();
 
   class P {
@@ -710,7 +760,7 @@
       this.vy = -Math.random() * 0.4 - 0.1;
       this.r = Math.random() * 1.2 + 0.3;
       this.a = Math.random() * 0.35 + 0.05;
-      this.c = Math.random() > 0.6 ? '168,85,247' : '56,189,248';
+      this.c = Math.random() > 0.6 ? 'purple' : 'cyan';
     }
     update() {
       this.x += this.vx; this.y += this.vy;
@@ -719,7 +769,16 @@
     }
     draw() {
       ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(${this.c},${this.a})`; ctx.fill();
+      if (isP3) {
+        ctx.fillStyle = this.c === 'purple' 
+          ? `color(display-p3 0.68 0.28 0.98 / ${this.a})` 
+          : `color(display-p3 0.12 0.75 0.99 / ${this.a})`;
+      } else {
+        ctx.fillStyle = this.c === 'purple' 
+          ? `rgba(168,85,247,${this.a})` 
+          : `rgba(56,189,248,${this.a})`;
+      }
+      ctx.fill();
     }
   }
   for (let i = 0; i < 100; i++) particles.push(new P());

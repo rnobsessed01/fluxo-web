@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fluxo - Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" fetchpriority="high">
+<link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms,container-queries" as="script" fetchpriority="high">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" fetchpriority="high"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    :root {
+        --color-bg: #020617;
+    }
+    @media (dynamic-range: high) {
+        :root {
+            --color-bg: color(display-p3 0.01 0.02 0.08);
+        }
+    }
+    body { background-color: var(--color-bg) !important; color: #e8dff4; font-family: 'Space Grotesk', sans-serif; }
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .nav-btn.active { background-color: rgba(255,255,255,0.1); border-left: 3px solid #06B6D4; color: #06B6D4; }
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 15s infinite alternate ease-in-out; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+
+    @keyframes gradientDotsMove {
+        0% { background-position: 0px 0px, 5px 8.66px, 800% 400%, 1000% -400%, -1200% -600%, 400% 17.32px; }
+        100% { background-position: 0px 0px, 5px 8.66px, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    }
+    @keyframes gradientDotsHue {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+    }
+    .gradient-dots-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background-color: #020617;
+        background-image: 
+            radial-gradient(circle at 50% 50%, transparent 1.5px, #020617 0 8px, transparent 8px),
+            radial-gradient(circle at 50% 50%, transparent 1.5px, #020617 0 8px, transparent 8px),
+            radial-gradient(circle at 50% 50%, #f00, transparent 60%),
+            radial-gradient(circle at 50% 50%, #ff0, transparent 60%),
+            radial-gradient(circle at 50% 50%, #0f0, transparent 60%),
+            radial-gradient(ellipse at 50% 50%, #00f, transparent 60%);
+        background-size: 10px 17.32px, 10px 17.32px, 200% 200%, 200% 200%, 200% 200%, 200% 17.32px;
+        animation: gradientDotsMove 30s linear infinite, gradientDotsHue 6s linear infinite;
+    }
+</style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-hidden bg-[#020617] text-white">
+
+    <!-- Premium Live Ambient Background -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-600/10 blur-[120px] mix-blend-screen animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-blue-600/10 blur-[120px] mix-blend-screen animate-blob animation-delay-4000"></div>
+    </div>
+    
+    <!-- Login Overlay -->
+    <div id="admin-login" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617] overflow-hidden">
+        <div class="gradient-dots-bg"></div>
+        <div class="w-full max-w-md bg-black/60 backdrop-blur-[48px] border border-white/10 rounded-[40px] p-8 md:p-12 flex flex-col gap-8 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] z-10 relative">
+            <div class="flex flex-col items-center gap-2">
+                <h1 class="text-4xl text-white">Fluxo Admin</h1>
+                <p class="text-[11px] text-red-400 uppercase tracking-[0.3em] font-bold">RESTRICTED CLEARANCE</p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-[12px] text-[#ccc3d8] uppercase tracking-widest pl-1">Master Access Key</label>
+                <input id="admin-key" type="password" class="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-white outline-none focus:border-red-400" placeholder="••••••••">
+            </div>
+            <button onclick="loginAdmin()" class="w-full bg-red-500/20 text-red-400 border border-red-500/30 rounded-2xl py-4 font-medium hover:bg-red-500/30 transition-all">
+                Access Command Center
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="admin-dashboard" class="hidden h-screen w-full flex">
+        
+        <!-- Sidebar -->
+        <div class="w-64 border-r border-white/10 bg-black/40 backdrop-blur-xl flex flex-col">
+            <div class="p-8 border-b border-white/10">
+                <h1 class="text-2xl text-white font-bold tracking-wider">FLUXO</h1>
+                <p class="text-xs text-cyan-400 tracking-[0.2em] uppercase mt-1">Command</p>
+            </div>
+            <div class="flex-1 flex flex-col p-4 gap-2">
+                <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn active flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm hover:bg-white/5 transition-all text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span> Overview
+                </button>
+                <button onclick="switchTab('users')" id="nav-users" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm hover:bg-white/5 transition-all text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">group</span> Users & Audit
+                </button>
+                <button onclick="switchTab('broadcast')" id="nav-broadcast" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm hover:bg-white/5 transition-all text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">campaign</span> Broadcast
+                </button>
+                <button onclick="switchTab('firehose')" id="nav-firehose" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm hover:bg-white/5 transition-all text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">terminal</span> Live Firehose
+                </button>
+                <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm hover:bg-white/5 transition-all text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">settings</span> Settings
+                </button>
+            </div>
+            <div class="p-4">
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all text-sm">
+                    <span class="material-symbols-outlined text-[20px]">lock</span> Lock Console
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]">
+            
+            <!-- OVERVIEW TAB -->
+            <div id="tab-overview" class="tab-content active space-y-8">
+                <h2 class="text-3xl text-white">System Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-black/40 border border-white/10 p-6 rounded-3xl">
+                        <p class="text-sm text-gray-400 uppercase tracking-widest">Total Users</p>
+                        <h3 id="stat-users" class="text-5xl text-white mt-2 font-light">0</h3>
+                    </div>
+                    <div class="bg-black/40 border border-white/10 p-6 rounded-3xl">
+                        <p class="text-sm text-gray-400 uppercase tracking-widest">Total Messages</p>
+                        <h3 id="stat-msgs" class="text-5xl text-white mt-2 font-light">0</h3>
+                    </div>
+                    <div class="bg-black/40 border border-white/10 p-6 rounded-3xl">
+                        <p class="text-sm text-gray-400 uppercase tracking-widest">Server RAM Usage</p>
+                        <h3 id="stat-ram" class="text-5xl text-cyan-400 mt-2 font-light">0<span class="text-xl text-cyan-400/50"> MB</span></h3>
+                    </div>
+                </div>
+                <div class="bg-black/40 border border-white/10 p-8 rounded-3xl mt-8">
+                    <canvas id="analyticsChart" height="100"></canvas>
+                </div>
+            </div>
+
+            <!-- USERS TAB -->
+            <div id="tab-users" class="tab-content space-y-8">
+                <h2 class="text-3xl text-white">User Management</h2>
+                <div class="w-full bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-white/10 text-xs uppercase tracking-widest text-gray-500 bg-white/5">
+                                <th class="p-6 font-medium">ID</th>
+                                <th class="p-6 font-medium">Email</th>
+                                <th class="p-6 font-medium">Status</th>
+                                <th class="p-6 font-medium text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body" class="text-gray-300"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BROADCAST TAB -->
+            <div id="tab-broadcast" class="tab-content space-y-8">
+                <h2 class="text-3xl text-white">Global Broadcast</h2>
+                <p class="text-gray-400">Push an instant notification to all currently active users.</p>
+                <div class="bg-black/40 border border-white/10 p-8 rounded-3xl max-w-2xl">
+                    <textarea id="broadcast-msg" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white h-32 focus:border-cyan-400 outline-none" placeholder="Enter announcement..."></textarea>
+                    <div class="flex gap-4 mt-4">
+                        <button onclick="sendBroadcast()" class="px-6 py-3 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 transition-colors">Push Broadcast</button>
+                        <button onclick="clearBroadcast()" class="px-6 py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl hover:bg-red-500/20 transition-colors">Clear Active</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FIREHOSE TAB -->
+            <div id="tab-firehose" class="tab-content h-full">
+                <div class="flex flex-col h-full space-y-4">
+                    <h2 class="text-3xl text-white">Live Firehose</h2>
+                    <div class="flex-1 bg-[#020617] border border-green-500/30 rounded-3xl p-6 font-mono text-sm overflow-y-auto shadow-[0_0_30px_rgba(34,197,94,0.05)] relative">
+                    <div class="sticky top-0 right-0 flex justify-end items-center gap-2 mb-4 bg-[#020617]/90 p-2 z-10">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-green-500 text-xs tracking-widest uppercase" id="ws-status">Disconnected</span>
+                    </div>
+                    <div id="firehose-logs" class="flex flex-col gap-3 text-green-400 pb-10">
+                        <div class="opacity-50">> Awaiting secure connection...</div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="tab-settings" class="tab-content space-y-8">
+                <h2 class="text-3xl text-white">System Settings</h2>
+                <div class="bg-black/40 border border-white/10 p-8 rounded-3xl max-w-2xl flex flex-col gap-4">
+                    <label class="text-sm text-gray-400 uppercase tracking-widest">Groq API Key (LLM)</label>
+                    <input id="setting-groq-key" type="password" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:border-cyan-400 outline-none" placeholder="gsk_...">
+                    <button onclick="saveSettings()" class="w-max px-6 py-3 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 transition-colors mt-2">Update API Key</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- God Mode Modal -->
+    <div id="audit-modal" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-[#020617] border border-cyan-500/20 w-full max-w-3xl rounded-3xl flex flex-col max-h-[85vh] shadow-[0_0_50px_rgba(6,182,212,0.1)]">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5 rounded-t-3xl">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-cyan-400">admin_panel_settings</span>
+                    <h3 class="text-xl text-white font-bold tracking-widest">GOD MODE <span class="text-xs text-cyan-400 ml-2 font-normal">CHAT INSPECTION</span></h3>
+                </div>
+                <button onclick="closeAudit()" class="text-gray-400 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div id="audit-logs" class="p-6 overflow-y-auto flex-1 flex flex-col gap-6 text-sm">
+                <!-- Logs here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAdminKey = '';
+        let chartInstance = null;
+
+        async function api(url, method = 'POST', body = {}) {
+            try {
+                const res = await fetch('/api/admin' + url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ adminKey: currentAdminKey, ...body })
+                });
+                let data;
+                try { data = await res.json(); } catch(e) { throw new Error('Invalid server response'); }
+                if (!res.ok) throw new Error(data.error || 'Server error');
+                return data;
+            } catch (err) {
+                console.error("API Error:", err);
+                throw err;
+            }
+        }
+
+        async function loginAdmin() {
+            currentAdminKey = document.getElementById('admin-key').value;
+            if (!currentAdminKey) return;
+            try {
+                await loadDashboard();
+                connectWebSocket();
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } catch (err) {
+                alert(err.message);
+                currentAdminKey = '';
+            }
+        }
+
+        let ws;
+        function connectWebSocket() {
+            if(ws) ws.close();
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(`${protocol}//${window.location.host}`);
+            
+            ws.onopen = () => {
+                document.getElementById('ws-status').innerText = 'Connected';
+                ws.send(JSON.stringify({ type: 'AUTH', adminKey: currentAdminKey }));
+            };
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const firehose = document.getElementById('firehose-logs');
+                const time = new Date().toLocaleTimeString();
+                
+                let logHtml = '';
+                if (data.type === 'SYSTEM') {
+                    logHtml = `<div class="text-cyan-400">> [${time}] SYSTEM: ${data.message}</div>`;
+                } else if (data.type === 'USER_REGISTER') {
+                    logHtml = `<div class="text-purple-400">> [${time}] NEW REGISTRATION: ${data.email} from ${data.ip}</div>`;
+                } else if (data.type === 'USER_LOGIN') {
+                    logHtml = `<div class="text-blue-400">> [${time}] LOGIN: ${data.email} from ${data.ip}</div>`;
+                } else if (data.type === 'CHAT_INTERACTION') {
+                    logHtml = `<div class="text-green-400 border-l-2 border-green-500/50 pl-3 my-2">> [${time}] CHAT (User ${data.userId} - ${data.email}):<br><span class="text-gray-300">"${data.prompt}"</span></div>`;
+                }
+                
+                if (logHtml) {
+                    firehose.insertAdjacentHTML('beforeend', logHtml);
+                    firehose.parentElement.scrollTop = firehose.parentElement.scrollHeight;
+                }
+            };
+            
+            ws.onclose = () => {
+                document.getElementById('ws-status').innerText = 'Reconnecting...';
+                setTimeout(() => { if(currentAdminKey) connectWebSocket(); }, 3000);
+            };
+        }
+
+        function logoutAdmin() {
+            currentAdminKey = '';
+            if(ws) ws.close();
+            document.getElementById('admin-key').value = '';
+            document.getElementById('admin-login').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+            if (tabId === 'settings') loadSettings();
+        }
+
+        async function loadDashboard() {
+            const [analytics, users] = await Promise.all([
+                api('/analytics'),
+                api('/users')
+            ]);
+            
+            document.getElementById('stat-users').innerText = analytics.totalUsers;
+            document.getElementById('stat-msgs').innerText = analytics.totalMessages;
+            document.getElementById('stat-ram').innerHTML = analytics.ramUsageMB + '<span class="text-xl text-cyan-400/50"> MB</span>';
+
+            renderChart(analytics);
+            renderUsers(users.users);
+        }
+
+        function renderChart(data) {
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Users', 'Messages'],
+                    datasets: [{
+                        label: 'System Load',
+                        data: [data.totalUsers, data.totalMessages],
+                        backgroundColor: ['rgba(6, 182, 212, 0.5)', 'rgba(168, 85, 247, 0.5)'],
+                        borderColor: ['#06B6D4', '#A855F7'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = users.map(u => {
+                const isBanned = u.status === 'banned';
+                const statusBadge = isBanned 
+                    ? `<span class="px-3 py-1 bg-red-500/10 text-red-400 rounded-full border border-red-500/20">BANNED</span>`
+                    : `<span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full border border-green-500/20">ACTIVE</span>`;
+                
+                const banAction = isBanned 
+                    ? `<button onclick="setUserStatus(${u.id}, 'active')" class="text-green-400 hover:underline">Unban</button>`
+                    : `<button onclick="setUserStatus(${u.id}, 'banned')" class="text-red-400 hover:underline">Ban</button>`;
+
+                return `
+                    <tr class="border-b border-white/5 hover:bg-white/5">
+                        <td class="p-6 font-mono text-[#06B6D4]">SYS_${u.id}</td>
+                        <td class="p-6">${u.email}</td>
+                        <td class="p-6">${statusBadge}</td>
+                        <td class="p-6 text-right flex justify-end gap-4">
+                            <button onclick="viewLogs(${u.id})" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-bold"><span class="material-symbols-outlined text-[16px]">admin_panel_settings</span> God Mode</button>
+                            ${banAction}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function setUserStatus(userId, status) {
+            if(!confirm(`Are you sure you want to ${status === 'banned' ? 'BAN' : 'UNBAN'} this user?`)) return;
+            try {
+                await api('/users/status', 'POST', { userId, status });
+                loadDashboard();
+            } catch (err) { alert('Failed to update user: ' + err.message); }
+        }
+
+        async function viewLogs(userId) {
+            try {
+                const res = await api('/audit', 'POST', { userId });
+                const logsDiv = document.getElementById('audit-logs');
+                // The logs come from DB DESC (newest first). Let's reverse them so it reads top-down.
+                logsDiv.innerHTML = res.logs.slice().reverse().map(log => {
+                    const isUser = log.role === 'user';
+                    return `
+                    <div class="flex flex-col ${isUser ? 'items-end' : 'items-start'} w-full">
+                        <span class="text-[10px] text-gray-500 mb-1 px-2">${new Date(log.created_at).toLocaleString()}</span>
+                        <div class="max-w-[80%] p-4 rounded-2xl ${isUser ? 'bg-white/10 text-white rounded-tr-sm' : 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-50 rounded-tl-sm'}">
+                            <div class="break-words whitespace-pre-wrap">${log.content}</div>
+                        </div>
+                    </div>
+                    `;
+                }).join('') || '<p class="text-gray-500 text-center py-10">No chats recorded for this user.</p>';
+                document.getElementById('audit-modal').classList.remove('hidden');
+                setTimeout(() => { logsDiv.scrollTop = logsDiv.scrollHeight; }, 50);
+            } catch (err) { alert('Failed to load audit logs: ' + err.message); }
+        }
+
+        function closeAudit() {
+            document.getElementById('audit-modal').classList.add('hidden');
+        }
+
+        async function sendBroadcast() {
+            const msg = document.getElementById('broadcast-msg').value.trim();
+            if(!msg) return;
+            try {
+                await api('/broadcast', 'POST', { message: msg });
+                alert('Broadcast pushed to all active clients!');
+                document.getElementById('broadcast-msg').value = '';
+            } catch (err) { alert('Failed to send broadcast: ' + err.message); }
+        }
+
+        async function clearBroadcast() {
+            try {
+                await api('/broadcast', 'POST', { message: '' });
+                alert('Active broadcast cleared.');
+            } catch (err) { alert('Failed to clear broadcast: ' + err.message); }
+        }
+
+        async function loadSettings() {
+            const res = await api('/settings');
+            const groqRow = res.settings.find(s => s.key === 'groq_api_key');
+            if (groqRow) document.getElementById('setting-groq-key').value = groqRow.value;
+        }
+
+        async function saveSettings() {
+            const val = document.getElementById('setting-groq-key').value.trim();
+            if(!val) return;
+            try {
+                await api('/settings/update', 'POST', { key: 'groq_api_key', value: val });
+                alert('API Key updated successfully.');
+            } catch (err) { alert('Failed to update settings: ' + err.message); }
+        }
+    </script>
+</body></html>
