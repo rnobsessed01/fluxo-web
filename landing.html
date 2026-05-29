@@ -280,31 +280,81 @@
   }
   .section-sub { color: rgba(255,255,255,0.4); font-size: 1rem; max-width: 480px; line-height: 1.7; }
 
-  /* ── FEATURE CARDS ── */
+  /* ── FEATURE CARDS — GlowCard Effect ── */
   .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.25rem; margin-top: 3rem;
   }
+
+  /* Base card — glow variables injected by JS */
   .feature-card {
+    --glow-x: 50%;
+    --glow-y: 50%;
+    --glow-opacity: 0;
+    --glow-border-opacity: 0;
+    position: relative;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    cursor: default;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    /* Dark glass base */
     background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 1.5rem; padding: 2rem;
-    transition: all 0.4s ease; cursor: default;
+    /* Spotlight background radial — follows cursor */
+    background-image: radial-gradient(
+      300px circle at var(--glow-x) var(--glow-y),
+      rgba(168,85,247, var(--glow-opacity)),
+      transparent 70%
+    );
+    /* Glow border via box-shadow inset trick */
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.08),
+      inset 0 0 0 1px rgba(168,85,247, var(--glow-border-opacity)),
+      0 0 0 0 rgba(168,85,247,0);
   }
+
+  /* Pseudo element — renders the glowing border spotlight */
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    /* Spotlight border */
+    background: radial-gradient(
+      220px circle at var(--glow-x) var(--glow-y),
+      rgba(168,85,247, var(--glow-border-opacity)),
+      rgba(56,189,248, calc(var(--glow-border-opacity) * 0.5)),
+      transparent 65%
+    );
+    /* Mask so only border is visible */
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
   .feature-card:hover {
-    border-color: rgba(168,85,247,0.35);
-    background: rgba(168,85,247,0.05);
     transform: translateY(-5px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 25px rgba(168,85,247,0.1);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.08),
+      inset 0 0 0 1px rgba(168,85,247,0.3),
+      0 24px 60px rgba(0,0,0,0.5);
   }
+
   .feature-icon {
     width: 46px; height: 46px; border-radius: 0.875rem;
     display: flex; align-items: center; justify-content: center;
     background: rgba(168,85,247,0.1);
     border: 1px solid rgba(168,85,247,0.2);
     margin-bottom: 1.25rem;
-    font-size: 0; /* material icon container */
+    font-size: 0;
   }
   .feature-icon .material-symbols-outlined {
     font-size: 22px !important; color: var(--color-primary);
@@ -767,6 +817,45 @@
     }, 750);
   }
   setTimeout(nextMsg, 1400);
+
+  // ── GLOWCARD EFFECT (converted from React component) ──
+  // Tracks global pointer position for spotlight
+  let pointerX = 0, pointerY = 0;
+  document.addEventListener('pointermove', (e) => {
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+  });
+
+  // Apply glow to all feature cards
+  const glowCards = document.querySelectorAll('.feature-card');
+
+  glowCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      // Fade in the glow
+      card.style.setProperty('--glow-opacity', '0.08');
+      card.style.setProperty('--glow-border-opacity', '0.7');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      // Fade out the glow
+      card.style.setProperty('--glow-opacity', '0');
+      card.style.setProperty('--glow-border-opacity', '0');
+    });
+  });
+
+  // Continuously update spotlight position relative to each card
+  function updateGlowPositions() {
+    glowCards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      // Convert global pointer to local card coords
+      const localX = pointerX - rect.left;
+      const localY = pointerY - rect.top;
+      card.style.setProperty('--glow-x', `${localX}px`);
+      card.style.setProperty('--glow-y', `${localY}px`);
+    });
+    requestAnimationFrame(updateGlowPositions);
+  }
+  updateGlowPositions();
 </script>
 </body>
 </html>
