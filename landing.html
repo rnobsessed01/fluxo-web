@@ -693,74 +693,43 @@
 </footer>
 
 <script>
-  // ── SMOOTH FLOWING WAVES (Style 7) ──
+  // ── CANVAS PARTICLES ──
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H;
+  let W, H, particles = [];
 
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   window.addEventListener('resize', resize); resize();
 
-  // Wave definitions — each has its own color, amplitude, frequency, speed, opacity, vertical offset
-  const waves = [
-    { color: '168,85,247',  amp: 0.10, freq: 0.0018, speed: 0.0006, phase: 0,    yFrac: 0.35, opacity: 0.18, width: 2.5 },
-    { color: '139,92,246',  amp: 0.08, freq: 0.0022, speed: 0.0008, phase: 1.2,  yFrac: 0.45, opacity: 0.14, width: 1.8 },
-    { color: '56,189,248',  amp: 0.07, freq: 0.0015, speed: 0.0005, phase: 2.4,  yFrac: 0.55, opacity: 0.12, width: 2.0 },
-    { color: '168,85,247',  amp: 0.12, freq: 0.0012, speed: 0.0004, phase: 0.8,  yFrac: 0.65, opacity: 0.09, width: 3.0 },
-    { color: '99,102,241',  amp: 0.06, freq: 0.0025, speed: 0.0010, phase: 3.0,  yFrac: 0.50, opacity: 0.08, width: 1.5 },
-    { color: '56,189,248',  amp: 0.09, freq: 0.0014, speed: 0.0007, phase: 1.8,  yFrac: 0.40, opacity: 0.07, width: 2.2 },
-    { color: '192,132,252', amp: 0.05, freq: 0.0030, speed: 0.0012, phase: 0.4,  yFrac: 0.70, opacity: 0.06, width: 1.2 },
-  ];
-
-  let t = 0;
-
-  function drawWaves() {
-    ctx.clearRect(0, 0, W, H);
-    t += 1;
-
-    waves.forEach(w => {
-      w.phase += w.speed;
-      const baseY = H * w.yFrac;
-      const amplitude = H * w.amp;
-
-      ctx.beginPath();
-      ctx.moveTo(0, baseY);
-
-      for (let x = 0; x <= W; x += 3) {
-        const y = baseY
-          + Math.sin(x * w.freq + w.phase) * amplitude
-          + Math.sin(x * w.freq * 0.5 + w.phase * 1.3) * amplitude * 0.4;
-        ctx.lineTo(x, y);
-      }
-
-      // Fill below the wave with a subtle gradient
-      ctx.lineTo(W, H);
-      ctx.lineTo(0, H);
-      ctx.closePath();
-
-      const grad = ctx.createLinearGradient(0, baseY - amplitude, 0, baseY + amplitude * 2);
-      grad.addColorStop(0, `rgba(${w.color},${w.opacity * 0.6})`);
-      grad.addColorStop(1, `rgba(${w.color},0)`);
-      ctx.fillStyle = grad;
-      ctx.fill();
-
-      // Draw the wave line on top
-      ctx.beginPath();
-      ctx.moveTo(0, baseY);
-      for (let x = 0; x <= W; x += 3) {
-        const y = baseY
-          + Math.sin(x * w.freq + w.phase) * amplitude
-          + Math.sin(x * w.freq * 0.5 + w.phase * 1.3) * amplitude * 0.4;
-        ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = `rgba(${w.color},${w.opacity * 2})`;
-      ctx.lineWidth = w.width;
-      ctx.stroke();
-    });
-
-    requestAnimationFrame(drawWaves);
+  class P {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : H + 5;
+      this.vx = (Math.random() - 0.5) * 0.25;
+      this.vy = -Math.random() * 0.4 - 0.1;
+      this.r = Math.random() * 1.2 + 0.3;
+      this.a = Math.random() * 0.35 + 0.05;
+      this.c = Math.random() > 0.6 ? '168,85,247' : '56,189,248';
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.y < -5) this.reset(false);
+      if (this.x < 0 || this.x > W) this.vx *= -1;
+    }
+    draw() {
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${this.c},${this.a})`; ctx.fill();
+    }
   }
-  drawWaves();
+  for (let i = 0; i < 100; i++) particles.push(new P());
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(loop);
+  }
+  loop();
 
   // ── MOBILE MENU ──
   function openMenu() { document.getElementById('mobile-menu').classList.add('open'); }
